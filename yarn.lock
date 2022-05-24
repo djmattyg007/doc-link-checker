@@ -621,6 +621,7 @@ __metadata:
     "@types/node": ^17.0.35
     argparse: ^2.0.1
     eslint: ^8.16.0
+    fs-extra: ^10.1.0
     pathlib-js: ^1.3.0
     prettier: ^2.6.2
     rehype-raw: ^6.1.1
@@ -893,7 +894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^10.0.0":
+"fs-extra@npm:^10.0.0, fs-extra@npm:^10.1.0":
   version: 10.1.0
   resolution: "fs-extra@npm:10.1.0"
   dependencies:
