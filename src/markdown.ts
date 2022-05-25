@@ -6,7 +6,7 @@ import type { Link } from "mdast";
 import type { VFile } from "vfile";
 
 import type { LinkReference } from "./types";
-import { determineHrefType } from "./util";
+import { determineHrefType } from "./util.js";
 
 export type MarkdownType = "commonmark" | "gfm";
 

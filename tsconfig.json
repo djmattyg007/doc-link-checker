@@ -18,6 +18,7 @@
         "forceConsistentCasingInFileNames": true,
         "esModuleInterop": true,
         "sourceMap": true,
+        "skipLibCheck": true,
         "lib": ["esnext"],
         "outDir": "dist"
     },
