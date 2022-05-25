@@ -13,3 +13,10 @@ export interface LinkReference {
   readonly url: URL | null;
   readonly position: Position | null;
 }
+
+export interface HeadingReference {
+  readonly depth: number;
+  readonly text: string;
+  readonly anchor: string;
+  readonly position: Position | null;
+}

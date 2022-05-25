@@ -1,7 +1,8 @@
 import { readGlob, Options as GlobOptions } from "glob-reader";
 import type { VFile } from "vfile";
 
-import { scanMarkdownFile, MarkdownType } from "./markdown.js";
+import { mdFileExts, mdDefaultType } from "./filetypes.js";
+import { scanFileForLinks as scanMdFile, MarkdownType } from "./markdown.js";
 import type { LinkReference } from "./types";
 
 export interface ScanOptions {
@@ -19,7 +20,7 @@ export interface ScanResult {
 const scanOptionsDefaults: ScanOptions = {
   basePath: ".",
   caseSensitive: false,
-  mdType: "commonmark",
+  mdType: mdDefaultType,
   globConcurrency: 0,
 };
 
@@ -28,10 +29,6 @@ export async function* scanFiles(
   excludeGlobs: ReadonlyArray<string>,
   options?: Partial<ScanOptions>,
 ) {
-  console.log(includeGlobs);
-  console.log(excludeGlobs);
-  console.log(options);
-
   const mergedOptions: ScanOptions = Object.assign({}, scanOptionsDefaults, options || {});
 
   const globOptions: GlobOptions = {
@@ -54,10 +51,10 @@ export async function* scanFiles(
       continue;
     }
 
-    if ([".md", ".markdown"].includes(fileExt)) {
+    if (mdFileExts.has(fileExt)) {
       yield {
         file,
-        linkRefs: scanMarkdownFile(file),
+        linkRefs: scanMdFile(file),
       };
     }
   }

@@ -2,11 +2,12 @@ import type { Node, Parent } from "unist";
 import { unified, Processor } from "unified";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
-import type { Link } from "mdast";
+import type { Link, Heading, Literal } from "mdast";
 import type { VFile } from "vfile";
 
-import type { LinkReference } from "./types";
-import { determineHrefType } from "./util.js";
+import { mdDefaultType } from "./filetypes.js";
+import type { LinkReference, HeadingReference } from "./types";
+import { convertHrefToUrl } from "./util.js";
 
 export type MarkdownType = "commonmark" | "gfm";
 
@@ -15,15 +16,15 @@ export interface ScanMarkdownOptions {
 }
 
 const scanOptionsDefaults: ScanMarkdownOptions = {
-  mdType: "commonmark",
+  mdType: mdDefaultType,
 };
 
-function* yieldLinkNodes(node: Node | Parent | Link): Generator<Link> {
-  if (node.type === "link") {
-    yield node as Link;
+function* yieldNodes<N extends Node>(type: string, node: Node | Parent): Generator<N> {
+  if (node.type === type) {
+    yield node as N;
   } else if ("children" in node && node.children) {
     for (const child of node.children) {
-      yield* yieldLinkNodes(child);
+      yield* yieldNodes(type, child);
     }
   }
 }
@@ -36,18 +37,40 @@ function prepareProcessor(mdType: MarkdownType): Processor {
   return processor;
 }
 
-export async function* scanMarkdownFile(file: VFile, options?: Partial<ScanMarkdownOptions>): AsyncGenerator<LinkReference> {
+export async function* scanFileForLinks(file: VFile, options?: Partial<ScanMarkdownOptions>): AsyncGenerator<LinkReference> {
   const mergedOptions: ScanMarkdownOptions = Object.assign({}, scanOptionsDefaults, options || {});
 
   const processor = prepareProcessor(mergedOptions.mdType);
 
   const ast = processor.parse(file);
 
-  for (const link of yieldLinkNodes(ast)) {
+  for (const link of yieldNodes<Link>("link", ast)) {
     yield {
       href: link.url,
-      url: determineHrefType(link.url),
+      url: convertHrefToUrl(link.url),
       position: link.position || null,
+    };
+  }
+}
+
+export async function* scanFileForHeadings(file: VFile, options?: Partial<ScanMarkdownOptions>): AsyncGenerator<HeadingReference> {
+  const mergedOptions: ScanMarkdownOptions = Object.assign({}, scanOptionsDefaults, options || {});
+
+  const processor = prepareProcessor(mergedOptions.mdType);
+
+  const ast = processor.parse(file);
+
+  for (const heading of yieldNodes<Heading>("heading", ast)) {
+    let headingText = "";
+    for (const headingTextNode of (heading.children as Literal[])) {
+      headingText += headingTextNode.value;
+    }
+
+    yield {
+      depth: heading.depth,
+      text: headingText,
+      anchor: headingText.replaceAll(/\s/g, "-").replaceAll(/[^A-Za-z0-9_-]/g, ""),
+      position: heading.position || null,
     };
   }
 }

@@ -1,4 +1,4 @@
-export function determineHrefType(href: string): URL | null {
+export function convertHrefToUrl(href: string): URL | null {
   let url: URL;
   try {
     url = new URL(href);

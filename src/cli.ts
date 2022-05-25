@@ -1,5 +1,6 @@
 import { ArgumentParser, BooleanOptionalAction } from "argparse";
 
+import { mdDefaultType } from "./filetypes.js";
 import { scanFiles } from "./scanner.js";
 import { verifyLinks } from "./checker.js";
 
@@ -24,7 +25,7 @@ export function prepareParser(): ArgumentParser {
     "--md-type",
     {
       choices: ["commonmark", "gfm"],
-      default: "commonmark",
+      default: mdDefaultType,
       help: "Use a custom markdown parser. Defaults to standard commonmark.",
     },
   );
@@ -56,12 +57,26 @@ export async function main(args?: ReadonlyArray<string>): Promise<void> {
   const excludeGlobs = parsedArgs.exclude ? parsedArgs.exclude : DEFAULT_EXCLUDE_GLOBS;
 
   const scanOptions = {
+    basePath: process.cwd(),
     caseSensitive: Boolean(parsedArgs["case"]),
     mdType: parsedArgs["md_type"],
   };
 
   for await (const result of scanFiles(includeGlobs, excludeGlobs, scanOptions)) {
-    console.log(result.file.path);
-    await verifyLinks(result.file, result.linkRefs);
+    let foundError = false;
+    for await (const verifyError of verifyLinks(scanOptions.basePath, result.file, result.linkRefs)) {
+      if (foundError === false) {
+        console.log("---", result.file.path, "---");
+        foundError = true;
+      }
+
+      const position = verifyError.link.position;
+      const lineMarker = position ? String(position.start.line) : "?";
+      console.log("line %s: %s (%s error %d)", lineMarker, verifyError.link.href, verifyError.errorType, verifyError.errorCode);
+    }
+
+    if (foundError === false) {
+      console.log(result.file.path, "[OK]");
+    }
   }
 }

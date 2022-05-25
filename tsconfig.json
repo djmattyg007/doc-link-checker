@@ -6,7 +6,7 @@
         "strict": true,
         "strictNullChecks": true,
         "allowUnusedLabels": false,
-        "allowUnreachableCode": true,
+        "allowUnreachableCode": false,
         "exactOptionalPropertyTypes": true,
         "importsNotUsedAsValues": "error",
         "noFallthroughCasesInSwitch": true,
