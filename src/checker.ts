@@ -91,6 +91,7 @@ async function checkAnchor(
         return AnchorCheckResponse.ANCHOR_MATCH_SUCCESS;
       }
     }
+
     return AnchorCheckResponse.ANCHOR_MATCH_FAIL;
   }
 

@@ -443,7 +443,6 @@ __metadata:
     "@types/node": ^17.0.35
     argparse: ^2.0.1
     eslint: ^8.16.0
-    esm: ^3.2.25
     glob-reader: ^1.2.0
     prettier: ^2.6.2
     remark-gfm: ^3.0.1
@@ -571,13 +570,6 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: 654a0200b49dc07280673fee13cdfb04326466790e031dfa9660b69fba3b1cf766a51504328f9de56bd18e6b5eb7578985cf29dc7f016c5ec851220ff9db95eb
-  languageName: node
-  linkType: hard
-
-"esm@npm:^3.2.25":
-  version: 3.2.25
-  resolution: "esm@npm:3.2.25"
-  checksum: 978aabe2de83541c105605a6d60a26ed8e627ef6bb0a7605fe15a95bbdea6b8348bd045255cb22219c054dd09a81a94823df00843d9e97f42419c92015ce3a64
   languageName: node
   linkType: hard
 
