@@ -62,6 +62,7 @@ export async function main(args?: ReadonlyArray<string>): Promise<void> {
     mdType: parsedArgs["md_type"],
   };
 
+  let foundAnyError = false;
   for await (const result of scanFiles(includeGlobs, excludeGlobs, scanOptions)) {
     let foundError = false;
     for await (const verifyError of verifyLinks(scanOptions.basePath, result.file, result.linkRefs)) {
@@ -75,8 +76,14 @@ export async function main(args?: ReadonlyArray<string>): Promise<void> {
       console.log("line %s: %s (%s error %d)", lineMarker, verifyError.link.href, verifyError.errorType, verifyError.errorCode);
     }
 
-    if (foundError === false) {
+    if (foundError === true) {
+      foundAnyError = true;
+    } else {
       console.log(result.file.path, "[OK]");
     }
+  }
+
+  if (foundAnyError === true) {
+    process.exit(1);
   }
 }
