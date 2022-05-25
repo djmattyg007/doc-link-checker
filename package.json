@@ -4,13 +4,10 @@
   "packageManager": "yarn@3.2.1",
   "dependencies": {
     "argparse": "^2.0.1",
-    "fs-extra": "^10.1.0",
     "glob-reader": "^1.2.0",
-    "globby": "^13.1.1",
     "remark-gfm": "^3.0.1",
     "remark-parse": "^10.0.1",
-    "unified": "^10.1.2",
-    "unist-util-visit-parents": "^5.1.0"
+    "unified": "^10.1.2"
   },
   "devDependencies": {
     "@types/argparse": "^2.0.10",
