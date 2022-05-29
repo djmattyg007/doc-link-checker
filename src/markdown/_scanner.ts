@@ -15,7 +15,10 @@ function* yieldSingleTypeNodes<N extends Node>(type: string, node: Node | Parent
   }
 }
 
-function* yieldMultiTypeNodes<N extends Node>(types: ReadonlyArray<string>, node: Node | Parent): Generator<N> {
+function* yieldMultiTypeNodes<N extends Node>(
+  types: ReadonlyArray<string>,
+  node: Node | Parent,
+): Generator<N> {
   if (types.includes(node.type)) {
     yield node as N;
   } else if ("children" in node && node.children) {
@@ -25,7 +28,10 @@ function* yieldMultiTypeNodes<N extends Node>(types: ReadonlyArray<string>, node
   }
 }
 
-export function* yieldNodes<N extends Node>(type: string | ReadonlyArray<string>, ast: Node | Parent): Generator<N> {
+export function* yieldNodes<N extends Node>(
+  type: string | ReadonlyArray<string>,
+  ast: Node | Parent,
+): Generator<N> {
   if (typeof type === "string") {
     yield* yieldSingleTypeNodes(type, ast);
   } else {
