@@ -2,7 +2,8 @@ import type { VFile } from "vfile";
 import type { Link } from "mdast";
 
 import { prepareProcessor } from "./_scanner.js";
-import { ScanMarkdownOptions, scanOptionsDefaults } from "./_options.js";
+import { scanOptionsDefaults } from "./_options.js";
+import type { ScanMarkdownOptions } from "./types";
 import { yieldNodes } from "./_scanner.js";
 import type { LinkReference } from "../types";
 import { convertHrefToUrl } from "../utils.js";
