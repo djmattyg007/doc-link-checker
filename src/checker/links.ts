@@ -75,21 +75,11 @@ async function checkFile(basePath: string, destPath: string): Promise<FileCheckR
   return FileCheckResponse.SUCCESS;
 }
 
-/*
- * If we can't determine the type of the file (because it has no extension), we
- * don't allow anchors for it.
- *
- * If we have a file extension, we don't want to allow line number anchors if
- * it is a renderable document. In this case, we scan the target file for headings.
- *
- * If it's not a renderable document we know about, then and only then do we check
- * for line number anchors. However, it must have a known text file type extension.
- */
-async function checkAnchor(
+function checkDocFileAnchor(
   file: VFile,
   anchor: string,
   { mdType = mdDefaultType }: { mdType: MarkdownType },
-): Promise<AnchorCheckResponse> {
+): AnchorCheckResponse | null {
   if (!file.extname) {
     return AnchorCheckResponse.ANCHOR_UNDISCOVERABLE;
   }
@@ -102,6 +92,29 @@ async function checkAnchor(
     }
 
     return AnchorCheckResponse.ANCHOR_MATCH_FAIL;
+  }
+
+  return null;
+}
+
+/*
+ * If we can't determine the type of the file (because it has no extension), we
+ * don't allow anchors for it.
+ *
+ * If we have a file extension, we don't want to allow line number anchors if
+ * it is a renderable document. In this case, we scan the target file for headings.
+ *
+ * If it's not a renderable document we know about, then and only then do we check
+ * for line number anchors. However, it must have a known text file type extension.
+ */
+function checkAnchor(
+  file: VFile,
+  anchor: string,
+  { mdType = mdDefaultType }: { mdType: MarkdownType },
+): AnchorCheckResponse {
+  const docFileAnchorCheck = checkDocFileAnchor(file, anchor, { mdType });
+  if (docFileAnchorCheck !== null) {
+    return docFileAnchorCheck;
   }
 
   if (!isTextPath(file.path)) {
@@ -149,10 +162,16 @@ export async function* verifyLinks(
         continue;
       }
 
-      const checkAnchorResult = await checkAnchor(file, hrefAnchor, {
+      const checkAnchorResult = checkDocFileAnchor(file, hrefAnchor, {
         mdType: mergedOptions.mdType,
       });
-      if (
+      if (checkAnchorResult === null) {
+        yield {
+          errorType: "anchor",
+          errorCode: AnchorCheckResponse.ANCHOR_UNDISCOVERABLE,
+          link,
+        };
+      } else if (
         checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
         checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
       ) {
@@ -189,7 +208,7 @@ export async function* verifyLinks(
     }
 
     const destFile = await read(destPath);
-    const checkAnchorResult = await checkAnchor(destFile, hrefAnchor, {
+    const checkAnchorResult = checkAnchor(destFile, hrefAnchor, {
       mdType: mergedOptions.mdType,
     });
     if (
