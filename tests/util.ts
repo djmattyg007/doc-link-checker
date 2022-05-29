@@ -3,7 +3,7 @@ import url from "url";
 
 import tsheredoc from "tsheredoc";
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 export function* enumerate<T>(
   iterator: Iterable<T>,

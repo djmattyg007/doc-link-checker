@@ -16,11 +16,7 @@ describe("file scanner", function () {
       filePaths.push(result.file.path);
     }
 
-    assert.sameMembers(filePaths, [
-      "docs/doc1.md",
-      "docs/doc2.md",
-      "README.md",
-    ]);
+    assert.sameMembers(filePaths, ["docs/doc1.md", "docs/doc2.md", "README.md"]);
   });
 
   it("explicitly does not find non-markdown files", async function () {
@@ -82,9 +78,6 @@ describe("file scanner", function () {
       hrefs.push(link.href);
     }
 
-    assert.sameOrderedMembers(hrefs, [
-      "image.png",
-      "https://example.com",
-    ]);
+    assert.sameOrderedMembers(hrefs, ["image.png", "https://example.com"]);
   });
 });

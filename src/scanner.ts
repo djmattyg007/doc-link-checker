@@ -51,7 +51,7 @@ export async function* scanFiles(
     if (mdFileExts.has(fileExt)) {
       yield {
         file,
-        links: scanMdFile(file, { mdType: mergedOptions.mdType } ),
+        links: scanMdFile(file, { mdType: mergedOptions.mdType }),
       };
     }
   }
