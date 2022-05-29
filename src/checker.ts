@@ -121,7 +121,7 @@ async function checkAnchor(
 export async function* verifyLinks(
   basePath: string,
   file: VFile,
-  linkRefs: IterableIterator<Link>,
+  links: IterableIterator<Link>,
   options?: Partial<VerifyLinksOptions>,
 ): AsyncGenerator<VerifyLinkFileError | VerifyLinkAnchorError> {
   const mergedOptions: VerifyLinksOptions = Object.assign(
@@ -132,7 +132,7 @@ export async function* verifyLinks(
 
   const fileDir = path.join(basePath, file.dirname as string);
 
-  for (const link of linkRefs) {
+  for (const link of links) {
     if (link.url) {
       // We don't support checking URLs yet.
       continue;
