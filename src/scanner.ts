@@ -36,14 +36,11 @@ export async function* scanFiles(
     cwd: mergedOptions.basePath,
     ignore: excludeGlobs.slice(),
     encoding: "utf8",
+    caseSensitiveMatch: mergedOptions.caseSensitive,
   };
-  // Waiting on this: https://github.com/bent10/glob-reader/issues/6
-  // if (mergedOptions.globConcurrency > 0) {
-  //   globOptions.concurrency = mergedOptions.globConcurrency;
-  // }
-  // if (mergedOptions.caseSensitive === true) {
-  //   globOptions.caseSensitiveMatch = true;
-  // }
+  if (mergedOptions.globConcurrency > 0) {
+    globOptions.concurrency = mergedOptions.globConcurrency;
+  }
 
   const glob = readGlob(includeGlobs.slice(), globOptions);
   for await (const file of glob) {
