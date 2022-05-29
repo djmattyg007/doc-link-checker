@@ -35,7 +35,6 @@ export async function* scanFiles(
   const globOptions: GlobOptions = {
     cwd: mergedOptions.basePath,
     ignore: excludeGlobs.slice(),
-    encoding: "utf8",
     caseSensitiveMatch: mergedOptions.caseSensitive,
   };
   if (mergedOptions.globConcurrency > 0) {

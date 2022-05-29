@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+import isTextPath from "is-text-path";
 import type { VFile } from "vfile";
 import { read } from "to-vfile";
 
@@ -30,6 +31,7 @@ export enum AnchorCheckResponse {
   NO_ANCHORS_IN_FILETYPE = 4,
   ANCHOR_MATCH_SUCCESS = 5,
   ANCHOR_MATCH_FAIL = 6,
+  BINARY_FILE = 7,
 }
 
 export interface VerifyLinkFileError {
@@ -73,15 +75,14 @@ async function checkFile(basePath: string, destPath: string): Promise<FileCheckR
 }
 
 /*
- * If we can't determine the type of the file (because it has no extension),
- * we assume it isn't a renderable document. In this case, the only valid anchors
- * are line numbers.
+ * If we can't determine the type of the file (because it has no extension), we
+ * don't allow anchors for it.
  *
  * If we have a file extension, we don't want to allow line number anchors if
  * it is a renderable document. In this case, we scan the target file for headings.
  *
  * If it's not a renderable document we know about, then and only then do we check
- * for line number anchors.
+ * for line number anchors. However, it must have a known text file type extension.
  */
 async function checkAnchor(
   file: VFile,
@@ -89,16 +90,6 @@ async function checkAnchor(
   { mdType = mdDefaultType }: { mdType: MarkdownType },
 ): Promise<AnchorCheckResponse> {
   if (!file.extname) {
-    const anchorLinePointerTest = anchor.match(/^L([1-9][0-9]*)=?$/);
-    if (anchorLinePointerTest) {
-      return hasRequiredNumberOfLines(
-        file.value.toString("utf8"),
-        parseInt(anchorLinePointerTest[1]),
-      )
-        ? AnchorCheckResponse.LINE_TARGET_SUCCESS
-        : AnchorCheckResponse.LINE_TARGET_FAILURE;
-    }
-
     return AnchorCheckResponse.ANCHOR_UNDISCOVERABLE;
   }
 
@@ -112,9 +103,13 @@ async function checkAnchor(
     return AnchorCheckResponse.ANCHOR_MATCH_FAIL;
   }
 
+  if (!isTextPath(file.path)) {
+    return AnchorCheckResponse.BINARY_FILE;
+  }
+
   const anchorLinePointerTest = anchor.match(/^L([1-9][0-9]*)=?$/);
   if (anchorLinePointerTest) {
-    return hasRequiredNumberOfLines(file.value.toString("utf8"), parseInt(anchorLinePointerTest[1]))
+    return hasRequiredNumberOfLines(file.value.toString(), parseInt(anchorLinePointerTest[1]))
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
       : AnchorCheckResponse.LINE_TARGET_FAILURE;
   }
@@ -175,7 +170,7 @@ export async function* verifyLinks(
       continue;
     }
 
-    const destFile = await read(destPath, "utf8");
+    const destFile = await read(destPath);
     const checkAnchorResult = await checkAnchor(destFile, hrefAnchor, {
       mdType: mergedOptions.mdType,
     });
