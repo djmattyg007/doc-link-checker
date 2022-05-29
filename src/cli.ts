@@ -2,7 +2,7 @@ import { ArgumentParser, BooleanOptionalAction } from "argparse";
 
 import { mdDefaultType } from "./filetypes.js";
 import { scanFiles } from "./scanner.js";
-import { verifyLinks } from "./checker.js";
+import { verifyLinks } from "./checker/links.js";
 
 export const DEFAULT_INCLUDE_GLOBS: ReadonlyArray<string> = [
   "**/*.md",

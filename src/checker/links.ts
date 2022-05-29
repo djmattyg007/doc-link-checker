@@ -5,10 +5,10 @@ import isTextPath from "is-text-path";
 import type { VFile } from "vfile";
 import { read } from "to-vfile";
 
-import { mdFileExts, mdDefaultType } from "./filetypes.js";
-import type { MarkdownType } from "./markdown/types";
-import { scanFileForHeadings as scanMdFileForHeadings } from "./markdown/heading.js";
-import type { Link } from "./types";
+import { mdFileExts, mdDefaultType } from "../filetypes.js";
+import type { MarkdownType } from "../markdown/types";
+import { scanFileForHeadings as scanMdFileForHeadings } from "../markdown/heading.js";
+import type { Link } from "../types";
 
 export interface VerifyLinksOptions {
   readonly mdType: MarkdownType;
