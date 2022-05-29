@@ -89,7 +89,7 @@ export async function main(args?: ReadonlyArray<string>): Promise<number> {
   const scan = scanFiles(includeGlobs, excludeGlobs, scanOptions);
   for await (const result of scan) {
     let foundError = false;
-    const verify = verifyLinks(scanOptions.basePath, result.file, result.linkRefs);
+    const verify = verifyLinks(scanOptions.basePath, result.file, result.links);
     for await (const verifyError of verify) {
       if (foundError === false) {
         console.log("---", result.file.path, "---");

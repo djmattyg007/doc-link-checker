@@ -15,7 +15,7 @@ export interface ScanOptions {
 
 export interface ScanResult {
   readonly file: VFile;
-  readonly linkRefs: IterableIterator<Link>;
+  readonly links: IterableIterator<Link>;
 }
 
 const scanOptionsDefaults: ScanOptions = {
@@ -51,7 +51,7 @@ export async function* scanFiles(
     if (mdFileExts.has(fileExt)) {
       yield {
         file,
-        linkRefs: scanMdFile(file),
+        links: scanMdFile(file),
       };
     }
   }
