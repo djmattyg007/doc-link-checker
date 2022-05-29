@@ -1,17 +1,17 @@
 import type { VFile } from "vfile";
-import type { Heading, Literal } from "mdast";
+import type { Heading as HeadingNode, Literal as LiteralNode } from "mdast";
 
 import { prepareProcessor } from "./_scanner.js";
 import { scanOptionsDefaults } from "./_options.js";
 import type { ScanMarkdownOptions } from "./types";
 import { yieldNodes } from "./_scanner.js";
 import { prepareSlugger } from "./_slugger.js";
-import type { HeadingReference } from "../types";
+import type { Heading } from "../types";
 
 export function* scanFileForHeadings(
   file: VFile,
   options?: Partial<ScanMarkdownOptions>,
-): Generator<HeadingReference> {
+): Generator<Heading> {
   const mergedOptions: ScanMarkdownOptions = Object.assign({}, scanOptionsDefaults, options || {});
 
   const processor = prepareProcessor(mergedOptions.mdType);
@@ -20,8 +20,8 @@ export function* scanFileForHeadings(
 
   const slugger = prepareSlugger(mergedOptions.mdType);
 
-  for (const heading of yieldNodes<Heading>("heading", ast)) {
-    const headingText = (heading.children as Literal[]).reduce(
+  for (const heading of yieldNodes<HeadingNode>("heading", ast)) {
+    const headingText = (heading.children as LiteralNode[]).reduce(
       (allText, textNode) => allText + textNode.value,
       "",
     );

@@ -8,13 +8,13 @@ export interface Position {
   readonly end: PositionRef;
 }
 
-export interface LinkReference {
+export interface Link {
   readonly href: string;
   readonly url: URL | null;
   readonly position: Position | null;
 }
 
-export interface HeadingReference {
+export interface Heading {
   readonly depth: number;
   readonly text: string;
   readonly anchor: string;

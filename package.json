@@ -31,7 +31,8 @@
   "scripts": {
     "build": "tsc --declaration --noEmitOnError",
     "test": "mocha",
-    "reformat": "prettier -w src tests"
+    "reformat": "prettier -w src tests",
+    "md-tree": "remark --tree-out"
   },
   "bin": "./bin/index.js"
 }
