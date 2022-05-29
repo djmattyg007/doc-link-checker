@@ -58,10 +58,11 @@ export async function main(args?: ReadonlyArray<string>): Promise<void> {
   };
 
   let foundAnyError = false;
-  for await (const result of scanFiles(includeGlobs, excludeGlobs, scanOptions)) {
+  const scan = scanFiles(includeGlobs, excludeGlobs, scanOptions);
+  for await (const result of scan) {
     let foundError = false;
-    const verifier = verifyLinks(scanOptions.basePath, result.file, result.linkRefs);
-    for await (const verifyError of verifier) {
+    const verify = verifyLinks(scanOptions.basePath, result.file, result.linkRefs);
+    for await (const verifyError of verify) {
       if (foundError === false) {
         console.log("---", result.file.path, "---");
         foundError = true;
