@@ -1,4 +1,3 @@
-import type { MarkdownType } from "./markdown";
+export { mdDefaultType } from "./markdown/_options.js";
 
-export const mdFileExts: ReadonlySet<string> = new Set([".md", ".markdown"]);
-export const mdDefaultType: MarkdownType = "commonmark";
+export const mdFileExts: ReadonlySet<string> = new Set([".md", ".mdown", ".markdown"]);

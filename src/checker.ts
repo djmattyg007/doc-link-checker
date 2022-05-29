@@ -5,7 +5,8 @@ import type { VFile } from "vfile";
 import { read } from "to-vfile";
 
 import { mdFileExts, mdDefaultType } from "./filetypes.js";
-import { scanFileForHeadings as scanMdFileForHeadings, MarkdownType } from "./markdown.js";
+import type { MarkdownType } from "./markdown/types";
+import { scanFileForHeadings as scanMdFileForHeadings } from "./markdown/heading.js";
 import type { LinkReference } from "./types";
 
 export interface VerifyLinksOptions {
@@ -71,6 +72,17 @@ async function checkFile(basePath: string, destPath: string): Promise<FileCheckR
   return FileCheckResponse.SUCCESS;
 }
 
+/*
+ * If we can't determine the type of the file (because it has no extension),
+ * we assume it isn't a renderable document. In this case, the only valid anchors
+ * are line numbers.
+ *
+ * If we have a file extension, we don't want to allow line number anchors if
+ * it is a renderable document. In this case, we scan the target file for headings.
+ *
+ * If it's not a renderable document we know about, then and only then do we check
+ * for line number anchors.
+ */
 async function checkAnchor(
   file: VFile,
   anchor: string,
@@ -86,7 +98,7 @@ async function checkAnchor(
   }
 
   if (mdFileExts.has(file.extname)) {
-    for await (const heading of scanMdFileForHeadings(file, { mdType })) {
+    for (const heading of scanMdFileForHeadings(file, { mdType })) {
       if (heading.anchor === anchor) {
         return AnchorCheckResponse.ANCHOR_MATCH_SUCCESS;
       }
@@ -106,14 +118,14 @@ async function checkAnchor(
 export async function* verifyLinks(
   basePath: string,
   file: VFile,
-  linkRefs: AsyncIterableIterator<LinkReference>,
+  linkRefs: IterableIterator<LinkReference>,
   options?: Partial<VerifyLinksOptions>,
 ): AsyncGenerator<VerifyLinkFileError | VerifyLinkAnchorError> {
   const mergedOptions: VerifyLinksOptions = Object.assign({}, verifyLinksOptionsDefaults, options || {});
 
   const fileDir = path.join(basePath, file.dirname as string);
 
-  for await (const link of linkRefs) {
+  for (const link of linkRefs) {
     if (link.url) {
       // We don't support checking URLs yet.
       continue;

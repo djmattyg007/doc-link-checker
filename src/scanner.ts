@@ -2,7 +2,8 @@ import { readGlob, Options as GlobOptions } from "glob-reader";
 import type { VFile } from "vfile";
 
 import { mdFileExts, mdDefaultType } from "./filetypes.js";
-import { scanFileForLinks as scanMdFile, MarkdownType } from "./markdown.js";
+import type { MarkdownType } from "./markdown/types";
+import { scanFileForLinks as scanMdFile } from "./markdown/link.js";
 import type { LinkReference } from "./types";
 
 export interface ScanOptions {
