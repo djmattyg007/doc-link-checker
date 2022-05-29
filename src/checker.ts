@@ -7,7 +7,7 @@ import { read } from "to-vfile";
 import { mdFileExts, mdDefaultType } from "./filetypes.js";
 import type { MarkdownType } from "./markdown/types";
 import { scanFileForHeadings as scanMdFileForHeadings } from "./markdown/heading.js";
-import type { LinkReference } from "./types";
+import type { Link } from "./types";
 
 export interface VerifyLinksOptions {
   readonly mdType: MarkdownType;
@@ -35,13 +35,13 @@ export enum AnchorCheckResponse {
 export interface VerifyLinkFileError {
   readonly errorType: "file";
   readonly errorCode: FileCheckResponse;
-  readonly link: LinkReference;
+  readonly link: Link;
 }
 
 export interface VerifyLinkAnchorError {
   readonly errorType: "anchor";
   readonly errorCode: AnchorCheckResponse;
-  readonly link: LinkReference;
+  readonly link: Link;
 }
 
 function hasRequiredNumberOfLines(text: string, requiredNumberOfLines: number): boolean {
@@ -125,7 +125,7 @@ async function checkAnchor(
 export async function* verifyLinks(
   basePath: string,
   file: VFile,
-  linkRefs: IterableIterator<LinkReference>,
+  linkRefs: IterableIterator<Link>,
   options?: Partial<VerifyLinksOptions>,
 ): AsyncGenerator<VerifyLinkFileError | VerifyLinkAnchorError> {
   const mergedOptions: VerifyLinksOptions = Object.assign(

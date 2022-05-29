@@ -4,7 +4,7 @@ import type { VFile } from "vfile";
 import { mdFileExts, mdDefaultType } from "./filetypes.js";
 import type { MarkdownType } from "./markdown/types";
 import { scanFileForLinks as scanMdFile } from "./markdown/link.js";
-import type { LinkReference } from "./types";
+import type { Link } from "./types";
 
 export interface ScanOptions {
   readonly basePath: string;
@@ -15,7 +15,7 @@ export interface ScanOptions {
 
 export interface ScanResult {
   readonly path: VFile;
-  readonly linkRefs: AsyncIterator<LinkReference>;
+  readonly linkRefs: AsyncIterator<Link>;
 }
 
 const scanOptionsDefaults: ScanOptions = {

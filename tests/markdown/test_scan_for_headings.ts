@@ -6,10 +6,10 @@ import { VFile } from "vfile";
 import { heredoc, unwindSync } from "../util.js";
 
 import { scanFileForHeadings } from "../../src/markdown/heading.js";
-import type { HeadingReference } from "../../src/types";
+import type { Heading } from "../../src/types";
 
 function verifyHeading(
-  heading: HeadingReference,
+  heading: Heading,
   text: string,
   anchor: string,
   depth: number,
