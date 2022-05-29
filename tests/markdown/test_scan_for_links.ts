@@ -158,4 +158,27 @@ describe("markdown link scanner", function () {
     assert.isNull(link2.url);
     assert.strictEqual(link2.position?.start.line, 1);
   });
+
+  it("detects links in definitions", function () {
+    const file = new VFile(
+      heredoc(`
+      # This is a heading
+      [cool-stuff]: https://example.com
+      [secret-stuff]: ./test.md#anchor
+      `),
+    );
+    const scan = scanFileForLinks(file);
+    const results = unwindSync(scan);
+    assert.lengthOf(results, 2);
+
+    const link1 = results[0];
+    assert.strictEqual(link1.href, "https://example.com");
+    assert.instanceOf(link1.url, URL);
+    assert.strictEqual(link1.position?.start.line, 2);
+
+    const link2 = results[1];
+    assert.strictEqual(link2.href, "./test.md#anchor");
+    assert.isNull(link2.url);
+    assert.strictEqual(link2.position?.start.line, 3);
+  });
 });

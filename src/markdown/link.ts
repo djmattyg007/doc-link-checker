@@ -1,5 +1,5 @@
 import type { VFile } from "vfile";
-import type { Link as LinkNode } from "mdast";
+import type { Definition as DefinitionNode, Link as LinkNode } from "mdast";
 
 import { prepareProcessor } from "./_scanner.js";
 import { scanOptionsDefaults } from "./_options.js";
@@ -18,7 +18,7 @@ export function* scanFileForLinks(
 
   const ast = processor.parse(file);
 
-  for (const link of yieldNodes<LinkNode>("link", ast)) {
+  for (const link of yieldNodes<DefinitionNode | LinkNode>(["definition", "link"], ast)) {
     yield {
       href: link.url,
       url: convertHrefToUrl(link.url),
