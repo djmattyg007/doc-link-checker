@@ -14,8 +14,8 @@ export interface ScanOptions {
 }
 
 export interface ScanResult {
-  readonly path: VFile;
-  readonly linkRefs: AsyncIterator<Link>;
+  readonly file: VFile;
+  readonly linkRefs: IterableIterator<Link>;
 }
 
 const scanOptionsDefaults: ScanOptions = {
@@ -29,7 +29,7 @@ export async function* scanFiles(
   includeGlobs: ReadonlyArray<string>,
   excludeGlobs: ReadonlyArray<string>,
   options?: Partial<ScanOptions>,
-) {
+): AsyncGenerator<ScanResult> {
   const mergedOptions: ScanOptions = Object.assign({}, scanOptionsDefaults, options || {});
 
   const globOptions: GlobOptions = {
