@@ -25,6 +25,7 @@ export enum FileCheckResponse {
 }
 
 export enum AnchorCheckResponse {
+  EMPTY_ANCHOR = 0,
   LINE_TARGET_SUCCESS = 1,
   LINE_TARGET_FAILURE = 2,
   ANCHOR_UNDISCOVERABLE = 3,
@@ -138,7 +139,17 @@ export async function* verifyLinks(
     }
 
     if (link.href.startsWith("#")) {
-      const checkAnchorResult = await checkAnchor(file, link.href.slice(1), {
+      const hrefAnchor = link.href.slice(1);
+      if (hrefAnchor.length === 0) {
+        yield {
+          errorType: "anchor",
+          errorCode: AnchorCheckResponse.EMPTY_ANCHOR,
+          link,
+        };
+        continue;
+      }
+
+      const checkAnchorResult = await checkAnchor(file, hrefAnchor, {
         mdType: mergedOptions.mdType,
       });
       if (
@@ -167,6 +178,13 @@ export async function* verifyLinks(
     }
 
     if (!hrefAnchor) {
+      if (link.href.endsWith("#")) {
+        yield {
+          errorType: "anchor",
+          errorCode: AnchorCheckResponse.EMPTY_ANCHOR,
+          link,
+        };
+      }
       continue;
     }
 
