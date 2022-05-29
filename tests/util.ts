@@ -5,7 +5,18 @@ import tsheredoc from "tsheredoc";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
-export function* enumerate<T>(
+export async function* enumerate<T>(
+  iterator: AsyncIterable<T>,
+  { start = 0 }: Partial<{ start: number }> = {},
+): AsyncGenerator<[number, T]> {
+  let counter = start;
+  for await (const value of iterator) {
+    yield [counter, value];
+    counter++;
+  }
+}
+
+export function* enumerateSync<T>(
   iterator: Iterable<T>,
   { start = 0 }: Partial<{ start: number }> = {},
 ): Generator<[number, T]> {

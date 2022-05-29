@@ -27,7 +27,7 @@ export enum FileCheckResponse {
 export enum AnchorCheckResponse {
   EMPTY_ANCHOR = 0,
   LINE_TARGET_SUCCESS = 1,
-  LINE_TARGET_FAILURE = 2,
+  LINE_TARGET_FAIL = 2,
   ANCHOR_UNDISCOVERABLE = 3,
   NO_ANCHORS_IN_FILETYPE = 4,
   ANCHOR_MATCH_SUCCESS = 5,
@@ -125,7 +125,7 @@ function checkAnchor(
   if (anchorLinePointerTest) {
     return hasRequiredNumberOfLines(file.value.toString(), parseInt(anchorLinePointerTest[1]))
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
-      : AnchorCheckResponse.LINE_TARGET_FAILURE;
+      : AnchorCheckResponse.LINE_TARGET_FAIL;
   }
 
   return AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE;
@@ -168,7 +168,7 @@ export async function* verifyLinks(
       if (checkAnchorResult === null) {
         yield {
           errorType: "anchor",
-          errorCode: AnchorCheckResponse.ANCHOR_UNDISCOVERABLE,
+          errorCode: AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE,
           link,
         };
       } else if (

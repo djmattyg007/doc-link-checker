@@ -3,7 +3,7 @@ import { assert } from "chai";
 
 import { VFile } from "vfile";
 
-import { enumerate, heredoc, unwindSync } from "../util.js";
+import { enumerateSync, heredoc, unwindSync } from "../util.js";
 
 import { scanFileForLinks } from "../../src/markdown/link.js";
 
@@ -106,7 +106,7 @@ describe("markdown link scanner", function () {
     "assets/flowchart.png",
     "../CONTRIBUTING.md",
   ];
-  for (const [count, href] of enumerate(relativeHrefCases, { start: 1 })) {
+  for (const [count, href] of enumerateSync(relativeHrefCases, { start: 1 })) {
     it(`detects relative hrefs ${count}`, genDetectRelativeHref(href));
   }
 
@@ -134,7 +134,7 @@ describe("markdown link scanner", function () {
     "assets/notes.txt#L22",
     "../CONTRIBUTING.md#linting",
   ];
-  for (const [count, href] of enumerate(relativeHrefWithAnchorCases, { start: 1 })) {
+  for (const [count, href] of enumerateSync(relativeHrefWithAnchorCases, { start: 1 })) {
     it(`detects relative hrefs with anchors ${count}`, genDetectRelativeHrefWithAnchor(href));
   }
 

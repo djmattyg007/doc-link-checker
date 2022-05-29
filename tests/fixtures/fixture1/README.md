@@ -10,3 +10,5 @@ This is a project.
 ## Cool stuff
 
 We have [cool stuff](./docs/doc2.md#cool-stuff).
+
+###not a heading
