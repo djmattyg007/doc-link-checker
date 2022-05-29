@@ -4,8 +4,8 @@ import { mdDefaultType } from "./filetypes.js";
 import { scanFiles } from "./scanner.js";
 import { verifyLinks } from "./checker.js";
 
-export const DEFAULT_INCLUDE_GLOBS: ReadonlyArray<string> = ["**/*.md", "**/*.markdown"];
-export const DEFAULT_EXCLUDE_GLOBS: ReadonlyArray<string> = ["**/node_modules/**/*", "**/.venv/*", "**/venv/*", "**/vendor/*"];
+export const DEFAULT_INCLUDE_GLOBS: ReadonlyArray<string> = ["**/*.md", "**/*.mdown", "**/*.markdown"];
+export const DEFAULT_EXCLUDE_GLOBS: ReadonlyArray<string> = ["**/node_modules/**", "**/.venv/**", "**/venv/**", "**/vendor/**"];
 
 export function prepareParser(): ArgumentParser {
   const parser = new ArgumentParser(
