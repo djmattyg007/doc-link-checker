@@ -91,7 +91,12 @@ async function checkAnchor(
   if (!file.extname) {
     const anchorLinePointerTest = anchor.match(/^L([1-9][0-9]*)=?$/);
     if (anchorLinePointerTest) {
-      return hasRequiredNumberOfLines(file.value.toString("utf8"), parseInt(anchorLinePointerTest[1])) ? AnchorCheckResponse.LINE_TARGET_SUCCESS : AnchorCheckResponse.LINE_TARGET_FAILURE;
+      return hasRequiredNumberOfLines(
+        file.value.toString("utf8"),
+        parseInt(anchorLinePointerTest[1]),
+      )
+        ? AnchorCheckResponse.LINE_TARGET_SUCCESS
+        : AnchorCheckResponse.LINE_TARGET_FAILURE;
     }
 
     return AnchorCheckResponse.ANCHOR_UNDISCOVERABLE;
@@ -109,7 +114,9 @@ async function checkAnchor(
 
   const anchorLinePointerTest = anchor.match(/^L([1-9][0-9]*)=?$/);
   if (anchorLinePointerTest) {
-    return hasRequiredNumberOfLines(file.value.toString("utf8"), parseInt(anchorLinePointerTest[1])) ? AnchorCheckResponse.LINE_TARGET_SUCCESS : AnchorCheckResponse.LINE_TARGET_FAILURE;
+    return hasRequiredNumberOfLines(file.value.toString("utf8"), parseInt(anchorLinePointerTest[1]))
+      ? AnchorCheckResponse.LINE_TARGET_SUCCESS
+      : AnchorCheckResponse.LINE_TARGET_FAILURE;
   }
 
   return AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE;
@@ -121,7 +128,11 @@ export async function* verifyLinks(
   linkRefs: IterableIterator<LinkReference>,
   options?: Partial<VerifyLinksOptions>,
 ): AsyncGenerator<VerifyLinkFileError | VerifyLinkAnchorError> {
-  const mergedOptions: VerifyLinksOptions = Object.assign({}, verifyLinksOptionsDefaults, options || {});
+  const mergedOptions: VerifyLinksOptions = Object.assign(
+    {},
+    verifyLinksOptionsDefaults,
+    options || {},
+  );
 
   const fileDir = path.join(basePath, file.dirname as string);
 
@@ -132,13 +143,18 @@ export async function* verifyLinks(
     }
 
     if (link.href.startsWith("#")) {
-      const checkAnchorResult = await checkAnchor(file, link.href.slice(1), { mdType: mergedOptions.mdType });
-      if (checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS && checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS) {
+      const checkAnchorResult = await checkAnchor(file, link.href.slice(1), {
+        mdType: mergedOptions.mdType,
+      });
+      if (
+        checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
+        checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
+      ) {
         yield {
           errorType: "anchor",
           errorCode: checkAnchorResult,
           link,
-        }
+        };
       }
       continue;
     }
@@ -160,13 +176,18 @@ export async function* verifyLinks(
     }
 
     const destFile = await read(destPath, "utf8");
-    const checkAnchorResult = await checkAnchor(destFile, hrefAnchor, { mdType: mergedOptions.mdType });
-    if (checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS && checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS) {
+    const checkAnchorResult = await checkAnchor(destFile, hrefAnchor, {
+      mdType: mergedOptions.mdType,
+    });
+    if (
+      checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
+      checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
+    ) {
       yield {
         errorType: "anchor",
         errorCode: checkAnchorResult,
         link,
-      }
+      };
     }
   }
 }

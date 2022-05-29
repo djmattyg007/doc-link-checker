@@ -1,6 +1,9 @@
 import tsheredoc from "tsheredoc";
 
-export function* enumerate<T>(iterator: Iterable<T>, { start = 0 }: Partial<{ start: number }> = {}): Generator<[number, T]> {
+export function* enumerate<T>(
+  iterator: Iterable<T>,
+  { start = 0 }: Partial<{ start: number }> = {},
+): Generator<[number, T]> {
   let counter = start;
   for (const value of iterator) {
     yield [counter, value];

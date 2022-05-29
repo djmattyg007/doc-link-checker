@@ -8,7 +8,10 @@ import { yieldNodes } from "./_scanner.js";
 import { prepareSlugger } from "./_slugger.js";
 import type { HeadingReference } from "../types";
 
-export function* scanFileForHeadings(file: VFile, options?: Partial<ScanMarkdownOptions>): Generator<HeadingReference> {
+export function* scanFileForHeadings(
+  file: VFile,
+  options?: Partial<ScanMarkdownOptions>,
+): Generator<HeadingReference> {
   const mergedOptions: ScanMarkdownOptions = Object.assign({}, scanOptionsDefaults, options || {});
 
   const processor = prepareProcessor(mergedOptions.mdType);

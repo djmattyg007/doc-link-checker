@@ -12,7 +12,13 @@ class CustomSlugger {
   private counters: { [key: string]: number } = Object.create(null);
 
   public slug(value: string): string {
-    let slug = value.toLocaleLowerCase().replaceAll(/\s/g, "-").replaceAll(/[^A-Za-z0-9_-]/g, "-").replaceAll(/-{2,}/g, "-").replaceAll(/^-+/g, "").replaceAll(/-+$/g, "");
+    let slug = value
+      .toLocaleLowerCase()
+      .replaceAll(/\s/g, "-")
+      .replaceAll(/[^A-Za-z0-9_-]/g, "-")
+      .replaceAll(/-{2,}/g, "-")
+      .replaceAll(/^-+/g, "")
+      .replaceAll(/-+$/g, "");
     const origSlug = slug;
 
     while (own.call(this.counters, slug)) {
@@ -28,7 +34,9 @@ class CustomSlugger {
 
 export function prepareSlugger(mdType: MarkdownType): Slugger {
   switch (mdType) {
-    case "gfm": return new GithubSlugger();
-    default: return new CustomSlugger();
+    case "gfm":
+      return new GithubSlugger();
+    default:
+      return new CustomSlugger();
   }
 }

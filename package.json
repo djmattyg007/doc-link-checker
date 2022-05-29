@@ -30,7 +30,8 @@
   },
   "scripts": {
     "build": "tsc --declaration --noEmitOnError",
-    "test": "mocha"
+    "test": "mocha",
+    "reformat": "prettier -w src tests"
   },
   "bin": "./bin/index.js"
 }

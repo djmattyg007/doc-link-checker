@@ -8,7 +8,10 @@ import { yieldNodes } from "./_scanner.js";
 import type { LinkReference } from "../types";
 import { convertHrefToUrl } from "../utils.js";
 
-export function* scanFileForLinks(file: VFile, options?: Partial<ScanMarkdownOptions>): Generator<LinkReference> {
+export function* scanFileForLinks(
+  file: VFile,
+  options?: Partial<ScanMarkdownOptions>,
+): Generator<LinkReference> {
   const mergedOptions: ScanMarkdownOptions = Object.assign({}, scanOptionsDefaults, options || {});
 
   const processor = prepareProcessor(mergedOptions.mdType);
