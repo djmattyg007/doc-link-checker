@@ -30,26 +30,54 @@ export function prepareParser(): ArgumentParser {
     default: mdDefaultType,
     help: "Use a custom markdown parser. Defaults to standard commonmark.",
   });
+
   parser.add_argument("--include", {
     action: "append",
     help: "A glob string to match files that should be checked. Can specify multiple times.",
+  });
+  parser.add_argument("--include-extend", {
+    action: "append",
+    help: "A glob string added to the default include glob strings to match files that should be checked. Can specify multiple times.",
   });
   parser.add_argument("--exclude", {
     action: "append",
     help: "A glob string to match files that should NOT be checked. Can specify multiple times.",
   });
+  parser.add_argument("--exclude-extend", {
+    action: "append",
+    help: "A glob string added to the default exclude glob strings to match files that should NOT be checked. Can specify multiple times.",
+  });
+
+  parser.add_argument("--success-code", {
+    type: Number,
+    default: 0,
+    help: "The status code to exit with when there are no errors.",
+  });
+  parser.add_argument("--failure-code", {
+    type: Number,
+    default: 1,
+    help: "The status code to exit with when there are errors.",
+  });
 
   return parser;
 }
 
-export async function main(args?: ReadonlyArray<string>): Promise<void> {
+export async function main(args?: ReadonlyArray<string>): Promise<number> {
   const argsToParse = args ? args.slice() : process.argv.slice(2);
 
   const parser = prepareParser();
   const parsedArgs = parser.parse_args(argsToParse);
 
-  const includeGlobs = parsedArgs.include ? parsedArgs.include : DEFAULT_INCLUDE_GLOBS;
-  const excludeGlobs = parsedArgs.exclude ? parsedArgs.exclude : DEFAULT_EXCLUDE_GLOBS;
+  const includeGlobs = parsedArgs.include
+    ? parsedArgs.include
+    : DEFAULT_INCLUDE_GLOBS.concat(
+        parsedArgs["include_extend"] ? parsedArgs["include_extend"] : [],
+      );
+  const excludeGlobs = parsedArgs.exclude
+    ? parsedArgs.exclude
+    : DEFAULT_EXCLUDE_GLOBS.concat(
+        parsedArgs["exclude_extend"] ? parsedArgs["exclude_extend"] : [],
+      );
 
   const scanOptions = {
     basePath: process.cwd(),
@@ -87,6 +115,8 @@ export async function main(args?: ReadonlyArray<string>): Promise<void> {
   }
 
   if (foundAnyError === true) {
-    process.exit(1);
+    return parsedArgs["failure_code"];
+  } else {
+    return parsedArgs["sucess_code"];
   }
 }

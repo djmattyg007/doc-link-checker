@@ -1,3 +1,3 @@
 import { main } from "./dist/cli.js";
 
-main();
+process.exit(await main());
