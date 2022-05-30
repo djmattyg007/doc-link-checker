@@ -1,0 +1,27 @@
+name: "Release"
+
+on:
+  release:
+    types: ["published"]
+
+jobs:
+  release:
+    runs-on: "ubuntu-20.04"
+
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - name: "Set up Node 16"
+        uses: "actions/setup-node@v3"
+        with:
+          node-version: 16
+          cache: "yarn"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: "Build package"
+        run: "yarn run build"
+
+      - name: "Publish package"
+        run: "yarn publish"
+        env:
+          NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}"

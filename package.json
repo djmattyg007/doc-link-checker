@@ -40,6 +40,13 @@
     "reformat": "prettier -w src tests",
     "md-tree": "remark --tree-out"
   },
+  "files": [
+    "src/**/*.ts",
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.js.map",
+    "tsconfig.json"
+  ],
   "sideEffects": false,
   "homepage": "https://github.com/djmattyg007/doc-link-checker",
   "repository": {
