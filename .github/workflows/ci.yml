@@ -37,4 +37,4 @@ jobs:
         run: "yarn run lint"
 
       - name: "Run tests"
-        run: "yarn run test"
+        run: "yarn run test --full-trace"
