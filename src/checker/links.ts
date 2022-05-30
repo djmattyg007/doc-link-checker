@@ -69,7 +69,7 @@ async function checkFile(basePath: string, destPath: string): Promise<FileCheckR
     return FileCheckResponse.FILE_NOT_EXISTS;
   }
 
-  if (!destPath.startsWith(basePath + "/")) {
+  if (!destPath.startsWith(basePath + path.sep)) {
     return FileCheckResponse.FILE_OUTSIDE_BASE;
   }
 
