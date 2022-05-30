@@ -37,6 +37,8 @@ export async function* scanFiles(
 
   const globOptions: GlobOptions = {
     cwd: mergedOptions.basePath,
+    // The intent is clearer with a plain slice.
+    // eslint-disable-next-line unicorn/prefer-spread
     ignore: excludeGlobs.slice(),
     caseSensitiveMatch: mergedOptions.caseSensitive,
   };
@@ -44,6 +46,8 @@ export async function* scanFiles(
     globOptions.concurrency = mergedOptions.globConcurrency;
   }
 
+  // The intent is clearer with a plain slice.
+  // eslint-disable-next-line unicorn/prefer-spread
   const glob = readGlob(includeGlobs.slice(), globOptions);
   for await (const file of glob) {
     const fileExt = file.extname;

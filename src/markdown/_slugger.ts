@@ -9,7 +9,7 @@ export interface Slugger {
 const own = Object.hasOwnProperty;
 
 class CustomSlugger {
-  private counters: Record<string, number> = Object.create(null);
+  private counters = Object.create(null) as Record<string, number>;
 
   public slug(value: string): string {
     let slug = value

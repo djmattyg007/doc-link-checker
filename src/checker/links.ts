@@ -49,8 +49,8 @@ export interface VerifyLinkAnchorError {
 
 function hasRequiredNumberOfLines(text: string, requiredNumberOfLines: number): boolean {
   let lineCount = 0;
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === "\n") {
+  for (const element of text) {
+    if (element === "\n") {
       lineCount++;
       if (lineCount >= requiredNumberOfLines) {
         return true;
@@ -179,7 +179,7 @@ async function verifyNonPureAnchorLink(
   link: Link,
   options: VerifyLinksOptions,
 ): Promise<VerifyLinkFileError | VerifyLinkAnchorError | undefined> {
-  const fileDir = path.join(basePath, file.dirname as string);
+  const fileDir = path.join(basePath, file.dirname!);
 
   const [hrefFile, hrefAnchor] = link.href.split("#", 2);
   const destPath = path.resolve(fileDir, hrefFile);

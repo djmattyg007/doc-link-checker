@@ -28,7 +28,7 @@ describe("file scanner", function () {
   it("finds links 1", async function () {
     const scan = scanFiles(["README.md"], [], { basePath: fixtureDir });
 
-    const result: ScanResult = (await scan.next()).value;
+    const result = (await scan.next()).value as ScanResult;
     assert.isTrue((await scan.next()).done);
 
     assert.strictEqual(result.file.path, "README.md");
@@ -48,7 +48,7 @@ describe("file scanner", function () {
   it("finds links 2", async function () {
     const scan = scanFiles(["docs/doc1.md"], [], { basePath: fixtureDir });
 
-    const result: ScanResult = (await scan.next()).value;
+    const result = (await scan.next()).value as ScanResult;
     assert.isTrue((await scan.next()).done);
 
     assert.strictEqual(result.file.path, "docs/doc1.md");
@@ -68,7 +68,7 @@ describe("file scanner", function () {
   it("finds links 3", async function () {
     const scan = scanFiles(["docs/doc2.md"], [], { basePath: fixtureDir });
 
-    const result: ScanResult = (await scan.next()).value;
+    const result = (await scan.next()).value as ScanResult;
     assert.isTrue((await scan.next()).done);
 
     assert.strictEqual(result.file.path, "docs/doc2.md");

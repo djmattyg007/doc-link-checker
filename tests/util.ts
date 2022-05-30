@@ -32,9 +32,7 @@ export function getFixtureDir(name: string): string {
   return path.join(fixtureDir, name);
 }
 
-// For reasons I don't understand, Typescript can't seem to properly
-// handle default exports from commonjs packages.
-// @ts-expect-error
+// @ts-expect-error: Typescript isn't handling default exports from commonjs packages.
 export const heredoc = tsheredoc.default as typeof tsheredoc;
 
 export async function unwind<T>(iterator: AsyncIterable<T>): Promise<T[]> {
