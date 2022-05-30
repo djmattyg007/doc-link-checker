@@ -25,7 +25,7 @@ describe("links verifier", function () {
       cwd: fixtureDir,
       path: "other-docs/doc.md",
     });
-    const verify = verifyLinks(fixtureDir, file, [].values());
+    const verify = verifyLinks(fixtureDir, file, []);
     const results = await unwind(verify);
     assert.lengthOf(results, 0);
   });
@@ -41,7 +41,7 @@ describe("links verifier", function () {
       url: new URL("https://example.com"),
       position: null,
     };
-    const verify = verifyLinks(fixtureDir, file, [urlLink].values());
+    const verify = verifyLinks(fixtureDir, file, [urlLink]);
     const results = await unwind(verify);
     assert.lengthOf(results, 0);
   });
@@ -59,7 +59,7 @@ describe("links verifier", function () {
       makeLink("../docs/image.png"),
       makeLink("../notes/stuff.txt"),
     ];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     const results = await unwind(verify);
     assert.lengthOf(results, 0);
   });
@@ -77,7 +77,7 @@ describe("links verifier", function () {
       makeLink("../notes/stuff.txt#L2"),
       makeLink("../notes/stuff.txt#L4="),
     ];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     const results = await unwind(verify);
     assert.lengthOf(results, 0);
   });
@@ -94,7 +94,7 @@ describe("links verifier", function () {
       makeLink("../real.md"),
       makeLink("../docs/doc3.md"),
     ];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -112,7 +112,7 @@ describe("links verifier", function () {
       path: "other-docs/doc.md",
     });
     const links: Link[] = [makeLink("../../sentinel")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -133,7 +133,7 @@ describe("links verifier", function () {
       path: "other-docs/doc.md",
     });
     const links: Link[] = [makeLink("#heading")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -154,7 +154,7 @@ describe("links verifier", function () {
       path: "other-docs/doc",
     });
     const links: Link[] = [makeLink("#a-heading")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -175,7 +175,7 @@ describe("links verifier", function () {
       path: "other-docs/doc.test",
     });
     const links: Link[] = [makeLink("#a-heading")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -197,7 +197,7 @@ describe("links verifier", function () {
       path: "other-docs/document",
     });
     const links: Link[] = [makeLink("#"), makeLink("../README.md#")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -218,7 +218,7 @@ describe("links verifier", function () {
       makeLink("../docs/image.png#heading"),
       makeLink("../docs/image.png#L42"),
     ];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -236,7 +236,7 @@ describe("links verifier", function () {
       path: "other-docs/doc.md",
     });
     const links: Link[] = [makeLink("../fake#nope"), makeLink("../fake#L10")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -254,7 +254,7 @@ describe("links verifier", function () {
       path: "other-docs/doc.md",
     });
     const links: Link[] = [makeLink("../README.md#nope"), makeLink("../docs/doc1.md#maybe")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -276,7 +276,7 @@ describe("links verifier", function () {
       makeLink("../docs/doc1.md#L20"),
       makeLink("#L45"),
     ];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
@@ -294,7 +294,7 @@ describe("links verifier", function () {
       path: "other-docs/doc.md",
     });
     const links: Link[] = [makeLink("../notes/stuff.txt#L100")];
-    const verify = verifyLinks(fixtureDir, file, links.values());
+    const verify = verifyLinks(fixtureDir, file, links);
     let counter = 0;
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;

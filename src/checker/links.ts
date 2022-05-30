@@ -224,7 +224,7 @@ async function verifyNonPureAnchorLink(
 export async function* verifyLinks(
   basePath: string,
   file: VFile,
-  links: IterableIterator<Link>,
+  links: Iterable<Link>,
   options?: Partial<VerifyLinksOptions>,
 ): AsyncGenerator<VerifyLinkFileError | VerifyLinkAnchorError> {
   const mergedOptions: VerifyLinksOptions = {
