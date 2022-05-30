@@ -1,6 +1,9 @@
 {
   "loader": "ts-node/esm",
   "extensions": ["ts"],
+  "file": [
+    "tests/chai.ts"
+  ],
   "spec": [
     "tests/**/test-*.ts"
   ]
