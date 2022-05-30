@@ -28,11 +28,12 @@ export enum AnchorCheckResponse {
   EMPTY_ANCHOR = 0,
   LINE_TARGET_SUCCESS = 1,
   LINE_TARGET_FAIL = 2,
-  ANCHOR_UNDISCOVERABLE = 3,
-  NO_ANCHORS_IN_FILETYPE = 4,
-  ANCHOR_MATCH_SUCCESS = 5,
-  ANCHOR_MATCH_FAIL = 6,
-  BINARY_FILE = 7,
+  LINE_TARGET_INVALID = 3,
+  ANCHOR_UNDISCOVERABLE = 4,
+  NO_ANCHORS_IN_FILETYPE = 5,
+  ANCHOR_MATCH_SUCCESS = 6,
+  ANCHOR_MATCH_FAIL = 7,
+  BINARY_FILE = 8,
 }
 
 export interface VerifyLinkFileError {
@@ -129,6 +130,10 @@ function checkAnchor(
     )
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
       : AnchorCheckResponse.LINE_TARGET_FAIL;
+  }
+
+  if (/^L[^1-9]/.test(anchor)) {
+    return AnchorCheckResponse.LINE_TARGET_INVALID;
   }
 
   return AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE;

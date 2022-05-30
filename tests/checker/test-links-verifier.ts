@@ -304,4 +304,22 @@ describe("links verifier", function () {
     }
     assert.strictEqual(counter, 1);
   });
+
+  it("returns errors when links with anchors targeting line numbers are invalid", async function () {
+    const file = new VFile({
+      value: "",
+      cwd: fixtureDir,
+      path: "other-docs/doc.md",
+    });
+    const links: Link[] = [makeLink("../notes/stuff.txt#L01"), makeLink("../notes/stuff.txt#LXYZ")];
+    const verify = verifyLinks(fixtureDir, file, links);
+    let counter = 0;
+    for await (const [idx, verifyError] of enumerate(verify)) {
+      counter++;
+      assert.strictEqual(verifyError.errorType, "anchor");
+      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.LINE_TARGET_INVALID);
+      assert.deepStrictEqual(verifyError.link, links[idx]);
+    }
+    assert.strictEqual(counter, 2);
+  });
 });
