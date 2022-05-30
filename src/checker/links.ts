@@ -131,6 +131,91 @@ function checkAnchor(
   return AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE;
 }
 
+function verifyPureAnchorLink(
+  file: VFile,
+  link: Link,
+  options: VerifyLinksOptions,
+): VerifyLinkAnchorError | undefined {
+  const hrefAnchor = link.href.slice(1);
+  if (hrefAnchor.length === 0) {
+    return {
+      errorType: "anchor",
+      errorCode: AnchorCheckResponse.EMPTY_ANCHOR,
+      link,
+    };
+  }
+
+  const checkAnchorResult = checkDocFileAnchor(file, hrefAnchor, {
+    mdType: options.mdType,
+  });
+  if (checkAnchorResult === null) {
+    return {
+      errorType: "anchor",
+      errorCode: AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE,
+      link,
+    };
+  } else if (
+    checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
+    checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
+  ) {
+    return {
+      errorType: "anchor",
+      errorCode: checkAnchorResult,
+      link,
+    };
+  }
+
+  return undefined;
+}
+
+async function verifyNonPureAnchorLink(
+  basePath: string,
+  file: VFile,
+  link: Link,
+  options: VerifyLinksOptions,
+): Promise<VerifyLinkFileError | VerifyLinkAnchorError | undefined> {
+  const fileDir = path.join(basePath, file.dirname as string);
+
+  const [hrefFile, hrefAnchor] = link.href.split("#", 2);
+  const destPath = path.resolve(fileDir, hrefFile);
+  const checkFileResult = await checkFile(basePath, destPath);
+  if (checkFileResult !== FileCheckResponse.SUCCESS) {
+    return {
+      errorType: "file",
+      errorCode: checkFileResult,
+      link,
+    };
+  }
+
+  if (!hrefAnchor) {
+    if (link.href.endsWith("#")) {
+      return {
+        errorType: "anchor",
+        errorCode: AnchorCheckResponse.EMPTY_ANCHOR,
+        link,
+      };
+    }
+    return;
+  }
+
+  const destFile = await read(destPath);
+  const checkAnchorResult = checkAnchor(destFile, hrefAnchor, {
+    mdType: options.mdType,
+  });
+  if (
+    checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
+    checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
+  ) {
+    return {
+      errorType: "anchor",
+      errorCode: checkAnchorResult,
+      link,
+    };
+  }
+
+  return undefined;
+}
+
 export async function* verifyLinks(
   basePath: string,
   file: VFile,
@@ -143,8 +228,6 @@ export async function* verifyLinks(
     options || {},
   );
 
-  const fileDir = path.join(basePath, file.dirname as string);
-
   for (const link of links) {
     if (link.url) {
       // We don't support checking URLs yet.
@@ -152,74 +235,20 @@ export async function* verifyLinks(
     }
 
     if (link.href.startsWith("#")) {
-      const hrefAnchor = link.href.slice(1);
-      if (hrefAnchor.length === 0) {
-        yield {
-          errorType: "anchor",
-          errorCode: AnchorCheckResponse.EMPTY_ANCHOR,
-          link,
-        };
-        continue;
+      const verifyPureAnchorResponse = verifyPureAnchorLink(file, link, mergedOptions);
+      if (verifyPureAnchorResponse) {
+        yield verifyPureAnchorResponse;
       }
-
-      const checkAnchorResult = checkDocFileAnchor(file, hrefAnchor, {
-        mdType: mergedOptions.mdType,
-      });
-      if (checkAnchorResult === null) {
-        yield {
-          errorType: "anchor",
-          errorCode: AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE,
-          link,
-        };
-      } else if (
-        checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
-        checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
-      ) {
-        yield {
-          errorType: "anchor",
-          errorCode: checkAnchorResult,
-          link,
-        };
-      }
-      continue;
-    }
-
-    const [hrefFile, hrefAnchor] = link.href.split("#", 2);
-    const destPath = path.resolve(fileDir, hrefFile);
-    const checkFileResult = await checkFile(basePath, destPath);
-    if (checkFileResult !== FileCheckResponse.SUCCESS) {
-      yield {
-        errorType: "file",
-        errorCode: checkFileResult,
+    } else {
+      const verifyNonPureAnchorResponse = await verifyNonPureAnchorLink(
+        basePath,
+        file,
         link,
-      };
-      continue;
-    }
-
-    if (!hrefAnchor) {
-      if (link.href.endsWith("#")) {
-        yield {
-          errorType: "anchor",
-          errorCode: AnchorCheckResponse.EMPTY_ANCHOR,
-          link,
-        };
+        mergedOptions,
+      );
+      if (verifyNonPureAnchorResponse) {
+        yield verifyNonPureAnchorResponse;
       }
-      continue;
-    }
-
-    const destFile = await read(destPath);
-    const checkAnchorResult = checkAnchor(destFile, hrefAnchor, {
-      mdType: mergedOptions.mdType,
-    });
-    if (
-      checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
-      checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
-    ) {
-      yield {
-        errorType: "anchor",
-        errorCode: checkAnchorResult,
-        link,
-      };
     }
   }
 }
