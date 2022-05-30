@@ -1,3 +1,27 @@
 {
-  "prettier": true
+  "prettier": true,
+  "ignores": [
+    "tests/fixtures/**"
+  ],
+  "rules": {
+    "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "null": false
+        }
+      }
+    ],
+    "@typescript-eslint/padding-line-between-statements": "off"
+  },
+  "overrides": [
+    {
+      "files": "tests/**/test-*.ts",
+      "rules": {
+        "max-params": ["error", { "max": 5 }]
+      }
+    }
+  ]
 }
