@@ -30,7 +30,10 @@ export async function* scanFiles(
   excludeGlobs: ReadonlyArray<string>,
   options?: Partial<ScanOptions>,
 ): AsyncGenerator<ScanResult> {
-  const mergedOptions: ScanOptions = Object.assign({}, scanOptionsDefaults, options || {});
+  const mergedOptions: ScanOptions = {
+    ...scanOptionsDefaults,
+    ...options,
+  };
 
   const globOptions: GlobOptions = {
     cwd: mergedOptions.basePath,

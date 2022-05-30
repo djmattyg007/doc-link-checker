@@ -12,7 +12,7 @@ const fixtureDir = getFixtureDir("fixture1");
 
 function makeLink(href: string): Link {
   return {
-    href: href,
+    href,
     url: null,
     position: null,
   };

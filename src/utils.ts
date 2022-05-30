@@ -2,11 +2,11 @@ export function convertHrefToUrl(href: string): URL | null {
   let url: URL;
   try {
     url = new URL(href);
-  } catch (err) {
-    if (err instanceof TypeError) {
+  } catch (error) {
+    if (error instanceof TypeError) {
       return null;
     }
-    throw err;
+    throw error;
   }
 
   return url;

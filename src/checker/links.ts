@@ -121,9 +121,12 @@ function checkAnchor(
     return AnchorCheckResponse.BINARY_FILE;
   }
 
-  const anchorLinePointerTest = /^L([1-9][0-9]*)=?$/.exec(anchor);
+  const anchorLinePointerTest = /^L([1-9]\d*)=?$/.exec(anchor);
   if (anchorLinePointerTest) {
-    return hasRequiredNumberOfLines(file.value.toString(), Number.parseInt(anchorLinePointerTest[1], 10))
+    return hasRequiredNumberOfLines(
+      file.value.toString(),
+      Number.parseInt(anchorLinePointerTest[1], 10),
+    )
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
       : AnchorCheckResponse.LINE_TARGET_FAIL;
   }
@@ -154,7 +157,9 @@ function verifyPureAnchorLink(
       errorCode: AnchorCheckResponse.NO_ANCHORS_IN_FILETYPE,
       link,
     };
-  } else if (
+  }
+
+  if (
     checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
     checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
   ) {
@@ -222,11 +227,10 @@ export async function* verifyLinks(
   links: IterableIterator<Link>,
   options?: Partial<VerifyLinksOptions>,
 ): AsyncGenerator<VerifyLinkFileError | VerifyLinkAnchorError> {
-  const mergedOptions: VerifyLinksOptions = Object.assign(
-    {},
-    verifyLinksOptionsDefaults,
-    options || {},
-  );
+  const mergedOptions: VerifyLinksOptions = {
+    ...verifyLinksOptionsDefaults,
+    ...options,
+  };
 
   for (const link of links) {
     if (link.url) {
@@ -240,6 +244,10 @@ export async function* verifyLinks(
         yield verifyPureAnchorResponse;
       }
     } else {
+      // There is necessary logic that must occur before running this logic.
+      // Also we're in an async generator, so it doesn't make sense to evaluate
+      // all the possible promises at once anyway.
+      // eslint-disable-next-line no-await-in-loop
       const verifyNonPureAnchorResponse = await verifyNonPureAnchorLink(
         basePath,
         file,

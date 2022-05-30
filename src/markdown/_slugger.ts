@@ -9,13 +9,13 @@ export interface Slugger {
 const own = Object.hasOwnProperty;
 
 class CustomSlugger {
-  private counters: { [key: string]: number } = Object.create(null);
+  private counters: Record<string, number> = Object.create(null);
 
   public slug(value: string): string {
     let slug = value
       .toLocaleLowerCase()
       .replaceAll(/\s/g, "-")
-      .replaceAll(/[^A-Za-z0-9_-]/g, "-")
+      .replaceAll(/[^\w-]/g, "-")
       .replaceAll(/-{2,}/g, "-")
       .replaceAll(/^-+/g, "")
       .replaceAll(/-+$/g, "");

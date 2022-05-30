@@ -1,17 +1,20 @@
 import type { VFile } from "vfile";
 import type { Heading as HeadingNode, Literal as LiteralNode } from "mdast";
 
+import type { Heading } from "../types";
 import { prepareProcessor, yieldNodes } from "./_scanner.js";
 import { scanOptionsDefaults } from "./_options.js";
 import type { ScanMarkdownOptions } from "./types";
 import { prepareSlugger } from "./_slugger.js";
-import type { Heading } from "../types";
 
 export function* scanFileForHeadings(
   file: VFile,
   options?: Partial<ScanMarkdownOptions>,
 ): Generator<Heading> {
-  const mergedOptions: ScanMarkdownOptions = Object.assign({}, scanOptionsDefaults, options || {});
+  const mergedOptions: ScanMarkdownOptions = {
+    ...scanOptionsDefaults,
+    ...options,
+  };
 
   const processor = prepareProcessor(mergedOptions.mdType);
 
@@ -29,7 +32,7 @@ export function* scanFileForHeadings(
       depth: heading.depth,
       text: headingText,
       anchor: slugger.slug(headingText),
-      position: heading.position || null,
+      position: heading.position ?? null,
     };
   }
 }
