@@ -106,6 +106,8 @@ describe("markdown link scanner", function () {
     "assets/flowchart.png",
     "../CONTRIBUTING.md",
   ];
+  // Acceptable stateless setup inside describe()
+  // eslint-disable-next-line mocha/no-setup-in-describe
   for (const [count, href] of enumerateSync(relativeHrefCases, { start: 1 })) {
     it(`detects relative hrefs ${count}`, genDetectRelativeHref(href));
   }
@@ -134,6 +136,8 @@ describe("markdown link scanner", function () {
     "assets/notes.txt#L22",
     "../CONTRIBUTING.md#linting",
   ];
+  // Acceptable stateless setup inside describe()
+  // eslint-disable-next-line mocha/no-setup-in-describe
   for (const [count, href] of enumerateSync(relativeHrefWithAnchorCases, { start: 1 })) {
     it(`detects relative hrefs with anchors ${count}`, genDetectRelativeHrefWithAnchor(href));
   }
