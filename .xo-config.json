@@ -26,6 +26,12 @@
         "unicorn/no-await-expression-member": "off",
         "max-params": ["error", { "max": 5 }]
       }
+    },
+    {
+      "files": "tests/**/*.ts",
+      "rules": {
+        "node/prefer-global/process": ["error", "always"]
+      }
     }
   ]
 }
