@@ -1,0 +1,5 @@
+- Determine git hosting URL.
+-- Check for "internal" links referenced by full URLs, and force them to change to relative links
+-- Check for github action URLs and badge URLs, and make sure the workflows exist
+
+- Check images
