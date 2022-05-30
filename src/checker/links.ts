@@ -1,5 +1,5 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { promises as fs } from "node:fs";
+import path from "node:path";
 
 import isTextPath from "is-text-path";
 import type { VFile } from "vfile";
@@ -64,11 +64,11 @@ function hasRequiredNumberOfLines(text: string, requiredNumberOfLines: number): 
 async function checkFile(basePath: string, destPath: string): Promise<FileCheckResponse> {
   try {
     await fs.access(destPath);
-  } catch (accessErr) {
+  } catch {
     return FileCheckResponse.FILE_NOT_EXISTS;
   }
 
-  if (destPath.startsWith(basePath + "/") === false) {
+  if (!destPath.startsWith(basePath + "/")) {
     return FileCheckResponse.FILE_OUTSIDE_BASE;
   }
 
@@ -121,9 +121,9 @@ function checkAnchor(
     return AnchorCheckResponse.BINARY_FILE;
   }
 
-  const anchorLinePointerTest = anchor.match(/^L([1-9][0-9]*)=?$/);
+  const anchorLinePointerTest = /^L([1-9][0-9]*)=?$/.exec(anchor);
   if (anchorLinePointerTest) {
-    return hasRequiredNumberOfLines(file.value.toString(), parseInt(anchorLinePointerTest[1]))
+    return hasRequiredNumberOfLines(file.value.toString(), Number.parseInt(anchorLinePointerTest[1], 10))
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
       : AnchorCheckResponse.LINE_TARGET_FAIL;
   }

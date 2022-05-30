@@ -1,10 +1,9 @@
 import type { VFile } from "vfile";
 import type { Heading as HeadingNode, Literal as LiteralNode } from "mdast";
 
-import { prepareProcessor } from "./_scanner.js";
+import { prepareProcessor, yieldNodes } from "./_scanner.js";
 import { scanOptionsDefaults } from "./_options.js";
 import type { ScanMarkdownOptions } from "./types";
-import { yieldNodes } from "./_scanner.js";
 import { prepareSlugger } from "./_slugger.js";
 import type { Heading } from "../types";
 
