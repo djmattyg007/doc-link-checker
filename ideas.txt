@@ -3,3 +3,7 @@
 -- Check for github action URLs and badge URLs, and make sure the workflows exist
 
 - Check images
+
+- Check link references
+
+- Support restructured text
