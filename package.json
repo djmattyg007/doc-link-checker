@@ -4,6 +4,8 @@
   "license": "GPLv3",
   "type": "module",
   "packageManager": "yarn@3.2.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "github-slugger": "^1.4.0",
     "glob-reader": "^1.3.1",
