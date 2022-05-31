@@ -9,7 +9,14 @@ export const markdownOptions = {
   mdDefaultType,
 };
 
-export { VerifyLinksOptions, FileCheckResponse, AnchorCheckResponse, VerifyLinkFileError, VerifyLinkAnchorError, verifyLinks } from "./checker/links.js";
+export {
+  VerifyLinksOptions,
+  FileCheckResponse,
+  AnchorCheckResponse,
+  VerifyLinkFileError,
+  VerifyLinkAnchorError,
+  verifyLinks,
+} from "./checker/links.js";
 
 export type { MarkdownType, ScanMarkdownOptions } from "./markdown/types";
 export { scanFileForLinks } from "./markdown/link.js";

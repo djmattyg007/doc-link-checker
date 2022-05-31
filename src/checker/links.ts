@@ -81,7 +81,10 @@ async function checkFile(basePath: string, destPath: string): Promise<FileCheckR
 function checkDocFileAnchor(
   file: VFile,
   anchor: string,
-  { mdType = mdDefaultType, mdFileExts = mdDefaultFileExts }: { mdType: MarkdownType, mdFileExts: ReadonlySet<string> },
+  {
+    mdType = mdDefaultType,
+    mdFileExts = mdDefaultFileExts,
+  }: { mdType: MarkdownType; mdFileExts: ReadonlySet<string> },
 ): AnchorCheckResponse | null {
   if (!file.extname) {
     return AnchorCheckResponse.ANCHOR_UNDISCOVERABLE;
@@ -113,7 +116,10 @@ function checkDocFileAnchor(
 function checkAnchor(
   file: VFile,
   anchor: string,
-  { mdType = mdDefaultType, mdFileExts = mdDefaultFileExts }: { mdType: MarkdownType, mdFileExts: ReadonlySet<string> },
+  {
+    mdType = mdDefaultType,
+    mdFileExts = mdDefaultFileExts,
+  }: { mdType: MarkdownType; mdFileExts: ReadonlySet<string> },
 ): AnchorCheckResponse {
   const docFileAnchorCheck = checkDocFileAnchor(file, anchor, { mdType, mdFileExts });
   if (docFileAnchorCheck !== null) {
