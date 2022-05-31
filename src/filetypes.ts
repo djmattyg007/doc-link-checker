@@ -1,3 +1,3 @@
 export { mdDefaultType } from "./markdown/_options.js";
 
-export const mdFileExts: ReadonlySet<string> = new Set([".md", ".mdown", ".markdown"]);
+export const mdDefaultFileExts: ReadonlySet<string> = new Set([".md", ".mdown", ".markdown"]);

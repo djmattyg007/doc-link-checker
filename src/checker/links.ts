@@ -5,17 +5,19 @@ import isTextPath from "is-text-path";
 import type { VFile } from "vfile";
 import { read } from "to-vfile";
 
-import { mdFileExts, mdDefaultType } from "../filetypes.js";
+import { mdDefaultFileExts, mdDefaultType } from "../filetypes.js";
 import type { MarkdownType } from "../markdown/types";
 import { scanFileForHeadings as scanMdFileForHeadings } from "../markdown/heading.js";
 import type { Link } from "../types";
 
 export interface VerifyLinksOptions {
   readonly mdType: MarkdownType;
+  readonly mdFileExts: ReadonlySet<string>;
 }
 
 const verifyLinksOptionsDefaults: VerifyLinksOptions = {
   mdType: mdDefaultType,
+  mdFileExts: mdDefaultFileExts,
 };
 
 export enum FileCheckResponse {
@@ -79,7 +81,7 @@ async function checkFile(basePath: string, destPath: string): Promise<FileCheckR
 function checkDocFileAnchor(
   file: VFile,
   anchor: string,
-  { mdType = mdDefaultType }: { mdType: MarkdownType },
+  { mdType = mdDefaultType, mdFileExts = mdDefaultFileExts }: { mdType: MarkdownType, mdFileExts: ReadonlySet<string> },
 ): AnchorCheckResponse | null {
   if (!file.extname) {
     return AnchorCheckResponse.ANCHOR_UNDISCOVERABLE;
@@ -111,9 +113,9 @@ function checkDocFileAnchor(
 function checkAnchor(
   file: VFile,
   anchor: string,
-  { mdType = mdDefaultType }: { mdType: MarkdownType },
+  { mdType = mdDefaultType, mdFileExts = mdDefaultFileExts }: { mdType: MarkdownType, mdFileExts: ReadonlySet<string> },
 ): AnchorCheckResponse {
-  const docFileAnchorCheck = checkDocFileAnchor(file, anchor, { mdType });
+  const docFileAnchorCheck = checkDocFileAnchor(file, anchor, { mdType, mdFileExts });
   if (docFileAnchorCheck !== null) {
     return docFileAnchorCheck;
   }
@@ -155,6 +157,7 @@ function verifyPureAnchorLink(
 
   const checkAnchorResult = checkDocFileAnchor(file, hrefAnchor, {
     mdType: options.mdType,
+    mdFileExts: options.mdFileExts,
   });
   if (checkAnchorResult === null) {
     return {
@@ -211,6 +214,7 @@ async function verifyNonPureAnchorLink(
   const destFile = await read(destPath);
   const checkAnchorResult = checkAnchor(destFile, hrefAnchor, {
     mdType: options.mdType,
+    mdFileExts: options.mdFileExts,
   });
   if (
     checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
