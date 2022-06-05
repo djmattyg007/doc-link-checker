@@ -22,6 +22,6 @@ jobs:
         run: "yarn run build"
 
       - name: "Publish package"
-        run: "yarn publish"
+        run: "yarn npm publish --public"
         env:
           NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}"
