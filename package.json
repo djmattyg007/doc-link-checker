@@ -1,5 +1,6 @@
 {
   "name": "doc-link-checker",
+  "version": "1.0.0",
   "description": "Verify that internal links in your documentation are valid.",
   "license": "GPLv3",
   "type": "module",
