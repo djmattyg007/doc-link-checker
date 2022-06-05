@@ -21,9 +21,9 @@ export interface ScanResult {
 
 const scanOptionsDefaults: ScanOptions = {
   basePath: ".",
-  caseSensitive: false,
   mdType: mdDefaultType,
   mdFileExts: mdDefaultFileExts,
+  caseSensitive: false,
   globConcurrency: 0,
 };
 
