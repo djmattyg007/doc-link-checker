@@ -115,8 +115,12 @@ import { read } from "to-vfile";
 
 const basePath = process.cwd();
 // Normally the VFile object and the links iterable would be obtained
-// directly from the scanner.
+// directly from the scanner, rather than retrieving these ourselves.
 const readme = await read("README.md");
+// VFile objects passed to verifyLinks() must be relative to basePath,
+// so we fix it up here manually. This isn't a problem when obtaining
+// results from the scanner.
+readme.path = "README.md";
 const links = [
   // Positions omitted for brevity.
   { href: "docs/intro.md", url: null, position: {...} },
@@ -187,6 +191,11 @@ The file targeted by a link does not exist.
 
 The file targeted by a link exists, but is outside of the base directory (`basePath`). This is
 likely a sign of a mistake.
+
+**`3` - convert to pure anchor**
+
+The file targeted by the link is the file which contains the link. In other words, it points to
+itself. The link should be converted to a pure anchor.
 
 ##### Anchor errors
 

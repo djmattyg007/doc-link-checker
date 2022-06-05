@@ -24,6 +24,7 @@ export enum FileCheckResponse {
   SUCCESS = 0,
   FILE_NOT_EXISTS = 1,
   FILE_OUTSIDE_BASE = 2,
+  CONVERT_PURE_ANCHOR = 3,
 }
 
 export enum AnchorCheckResponse {
@@ -209,8 +210,17 @@ async function verifyNonPureAnchorLink(
   const fileDir = path.join(basePath, file.dirname!);
 
   const [hrefFile, hrefAnchor] = link.href.split("#", 2);
-  const destPath = path.resolve(fileDir, hrefFile);
-  const checkFileResult = await checkFile(basePath, destPath);
+  const linkDestPath = path.resolve(fileDir, hrefFile);
+
+  if (linkDestPath === path.resolve(basePath, file.path)) {
+    return {
+      errorType: "file",
+      errorCode: FileCheckResponse.CONVERT_PURE_ANCHOR,
+      link,
+    };
+  }
+
+  const checkFileResult = await checkFile(basePath, linkDestPath);
   if (checkFileResult !== FileCheckResponse.SUCCESS) {
     return {
       errorType: "file",
@@ -230,7 +240,7 @@ async function verifyNonPureAnchorLink(
     return;
   }
 
-  const destFile = await read(destPath);
+  const destFile = await read(linkDestPath);
   const checkAnchorResult = checkAnchor(destFile, hrefAnchor, {
     mdType: options.mdType,
     mdFileExts: options.mdFileExts,

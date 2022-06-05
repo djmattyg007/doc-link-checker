@@ -1,7 +1,9 @@
 import { describe, it } from "mocha";
 import { assert } from "chai";
+import path from "node:path";
 
 import { VFile } from "vfile";
+import { read as makeVfile } from "to-vfile";
 
 import { enumerate, getFixtureDir, heredoc, unwind } from "../util.js";
 
@@ -120,6 +122,23 @@ describe("links verifier", function () {
       counter++;
       assert.strictEqual(verifyError.errorType, "file");
       assert.strictEqual(verifyError.errorCode, FileCheckResponse.FILE_OUTSIDE_BASE);
+      assert.deepStrictEqual(verifyError.link, links[idx]);
+    }
+    assert.strictEqual(counter, 1);
+  });
+
+  it("returns errors when links target the file the link is in", async function () {
+    const fixtureDir = getFixtureDir("fixture2");
+    const file = await makeVfile(path.join(fixtureDir, "docs", "doc.md"));
+    // VFile objects passed to verifyLinks() must be relative to the base path.
+    file.path = "docs/doc.md";
+    const links: Link[] = [makeLink("./doc.md#a-heading")];
+    const verify = verifyLinks(fixtureDir, file, links);
+    let counter = 0;
+    for await (const [idx, verifyError] of enumerate(verify)) {
+      counter++;
+      assert.strictEqual(verifyError.errorType, "file");
+      assert.strictEqual(verifyError.errorCode, FileCheckResponse.CONVERT_PURE_ANCHOR);
       assert.deepStrictEqual(verifyError.link, links[idx]);
     }
     assert.strictEqual(counter, 1);
