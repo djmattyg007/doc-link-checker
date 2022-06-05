@@ -1,3 +1,5 @@
+import process from "node:process";
+
 import { readGlob, Options as GlobOptions } from "glob-reader";
 import type { VFile } from "vfile";
 
