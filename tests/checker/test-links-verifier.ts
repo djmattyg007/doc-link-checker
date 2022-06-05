@@ -76,6 +76,8 @@ describe("links verifier", function () {
       makeLink("#heading"),
       makeLink("../notes/stuff.txt#L2"),
       makeLink("../notes/stuff.txt#L4="),
+      makeLink("../notes/stuff.txt#L1-L2"),
+      makeLink("../notes/stuff.txt#L2-L5="),
     ];
     const verify = verifyLinks(fixtureDir, file, links);
     const results = await unwind(verify);
@@ -321,5 +323,23 @@ describe("links verifier", function () {
       assert.deepStrictEqual(verifyError.link, links[idx]);
     }
     assert.strictEqual(counter, 2);
+  });
+
+  it("returns errors when links with anchors targeting line number ranges have an invalid range", async function () {
+    const file = new VFile({
+      value: "",
+      cwd: fixtureDir,
+      path: "other-docs/doc.md",
+    });
+    const links: Link[] = [makeLink("../notes/stuff.txt#L2-L1")];
+    const verify = verifyLinks(fixtureDir, file, links);
+    let counter = 0;
+    for await (const [idx, verifyError] of enumerate(verify)) {
+      counter++;
+      assert.strictEqual(verifyError.errorType, "anchor");
+      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.MULTI_LINE_TARGET_RANGE_INVALID);
+      assert.deepStrictEqual(verifyError.link, links[idx]);
+    }
+    assert.strictEqual(counter, 1);
   });
 });

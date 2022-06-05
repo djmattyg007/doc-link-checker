@@ -36,6 +36,7 @@ export enum AnchorCheckResponse {
   LINE_TARGET_SUCCESS = 6,
   LINE_TARGET_FAIL = 7,
   LINE_TARGET_INVALID = 8,
+  MULTI_LINE_TARGET_RANGE_INVALID = 9,
 }
 
 export interface VerifyLinkFileError {
@@ -135,6 +136,21 @@ function checkAnchor(
     return hasRequiredNumberOfLines(
       file.value.toString(),
       Number.parseInt(anchorLinePointerTest[1], 10),
+    )
+      ? AnchorCheckResponse.LINE_TARGET_SUCCESS
+      : AnchorCheckResponse.LINE_TARGET_FAIL;
+  }
+
+  const anchorMultiLinePointerTest = /^L([1-9]\d*)-L([1-9]\d*)=?$/.exec(anchor);
+  if (anchorMultiLinePointerTest) {
+    const start = Number.parseInt(anchorMultiLinePointerTest[1], 10);
+    const end = Number.parseInt(anchorMultiLinePointerTest[2], 10);
+    if (start >= end) {
+      return AnchorCheckResponse.MULTI_LINE_TARGET_RANGE_INVALID;
+    }
+    return hasRequiredNumberOfLines(
+      file.value.toString(),
+      end,
     )
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
       : AnchorCheckResponse.LINE_TARGET_FAIL;
