@@ -34,6 +34,7 @@ export async function* scanFiles(
 ): AsyncGenerator<ScanResult> {
   const mergedOptions: ScanOptions = {
     ...scanOptionsDefaults,
+    basePath: process.cwd(),
     ...options,
   };
 
