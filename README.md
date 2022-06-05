@@ -185,7 +185,8 @@ The file targeted by a link does not exist.
 
 **`2` - file exists outside base directory**
 
-The file targeted by a link exists, but is outside of the base directory (`basePath`). This is likely a sign of a mistake.
+The file targeted by a link exists, but is outside of the base directory (`basePath`). This is
+likely a sign of a mistake.
 
 ##### Anchor errors
 
