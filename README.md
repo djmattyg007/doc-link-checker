@@ -179,11 +179,11 @@ There are two types of errors that can be returned by the checker:
 
 A file error indicates there was a problem location the file referenced in the link.
 
-* `1` - file doesn't exist
+**`1` - file doesn't exist**
 
 The file targeted by a link does not exist.
 
-* `2` - file exists outside base directory
+**`2` - file exists outside base directory**
 
 The file targeted by a link exists, but is outside of the base directory (`basePath`). This is likely a sign of a mistake.
 
@@ -191,6 +191,72 @@ The file targeted by a link exists, but is outside of the base directory (`baseP
 
 An anchor error indicates the file referenced in the link exists, but the heading or line number
 referred to after the `#` in the link does not exist.
+
+**`1` - binary file**
+
+The link is targeting a binary file, which means there is no useful way to target individual
+sections of the file with an anchor.
+
+**`2` - anchor undiscoverable**
+
+The link is targeting a file with no file extension, which means it cannot easily be determined
+what the file is or if it contains valid anchor targets.
+
+**`3` - no anchors in filetype**
+
+The link is targeting a non-document file with an anchor that isn't supported for non-document
+files.
+
+**`5` - heading match fail**
+
+The link is targeting a document file, and the anchor points to a heading that doesn't exist.
+
+**`7` - line target fail**
+
+The link is targeting a non-document text file, and the anchor is a line number reference that
+doesn't exist. Either it points to a single line whose line number is greater than the number of
+lines in the target file, or it points to a multi-line range whose end line number is greater than
+the number of lines in the target file.
+
+**`8` - line target is invalid**
+
+The link is targeting a non-document text file, and the anchor looks like a line number reference,
+but isn't a valid line number reference.
+
+This is a specialised case of error code `3`, designed to help with debugging for end users.
+
+**`9` - multi-line target range is invalid**
+
+The link is targeting a non-document text file, and the anchor is a multi-line range. The start number of the range is greater than or equal to the end number of the range.
+
+### Putting it all together
+
+It's rare that you would want to use the scanner and the checker separately. Here's an example of
+how to use the two together.
+
+```typescript
+import { scanFiles, verifyFiles } from "doc-link-checker";
+
+const scanOptions = { basePath: "/path/to/documents" };
+
+let foundAnyError = false;
+const scan = scanFiles(["**/*.md"], [], scanOptions);
+for await (const result of scan) {
+  const verify = verifyLinks(scanOptions.basePath, result.file, result.links);
+  for await (const verifyError of verify) {
+    if (verifyError.errorType === "anchor") {
+      // We don't care about anchor errors for some reason.
+      continue;
+    }
+
+    foundAnyError = true;
+    console.log(`file ${result.file.path} has invalid link ${verifyError.link.href}`);
+  }
+}
+if (foundAnyError) {
+  process.exit(1);
+}
+```
 
 ### Other interfaces
 
