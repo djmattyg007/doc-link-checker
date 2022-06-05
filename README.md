@@ -22,7 +22,7 @@ $ yarn add doc-link-chcker
 Or with npm:
 
 ```
-$ npm install --save doc-link-checker
+$ npm add doc-link-checker
 ```
 
 ## Usage
@@ -274,3 +274,63 @@ import { mdDefaultType, mdDefaultFileExts } from "doc-link-checker";
 The only public interface for this package is what can be imported directly from the package's
 `main` file. Nested imports are not supported, and the internal organisation of the code could
 change at any time.
+
+## Development
+
+### Typescript
+
+The code is written in Typescript. You can check that the code compiles successfully by running
+`tsc` like so:
+
+```
+$ yarn run build
+```
+
+### Linting
+
+The tool `xo` is used for linting the code. This wraps `eslint` and `prettier` with a strict set of
+default rules. You can run `xo` like so:
+
+```
+$ yarn run lint
+```
+
+### Tests
+
+The tests are written using `mocha` and `chai`. You can run them like so:
+
+```
+$ yarn run test
+```
+
+### Debugging
+
+You can get the full tree of Markdown nodes used when scanning files quickly and easily by running
+the following command:
+
+```
+$ yarn run md-tree path/to/file.md
+```
+
+## Contributing
+
+All contributions are welcome! Please make sure that any code changes are accompanied by updated
+tests. I also recommend running prettier before committing, like so:
+
+```
+$ yarn run reformat
+```
+
+## License
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see https://www.gnu.org/licenses/.
