@@ -148,10 +148,7 @@ function checkAnchor(
     if (start >= end) {
       return AnchorCheckResponse.MULTI_LINE_TARGET_RANGE_INVALID;
     }
-    return hasRequiredNumberOfLines(
-      file.value.toString(),
-      end,
-    )
+    return hasRequiredNumberOfLines(file.value.toString(), end)
       ? AnchorCheckResponse.LINE_TARGET_SUCCESS
       : AnchorCheckResponse.LINE_TARGET_FAIL;
   }

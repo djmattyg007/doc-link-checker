@@ -337,7 +337,10 @@ describe("links verifier", function () {
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
       assert.strictEqual(verifyError.errorType, "anchor");
-      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.MULTI_LINE_TARGET_RANGE_INVALID);
+      assert.strictEqual(
+        verifyError.errorCode,
+        AnchorCheckResponse.MULTI_LINE_TARGET_RANGE_INVALID,
+      );
       assert.deepStrictEqual(verifyError.link, links[idx]);
     }
     assert.strictEqual(counter, 1);
