@@ -140,7 +140,7 @@ describe("links verifier", function () {
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
       assert.strictEqual(verifyError.errorType, "anchor");
-      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.ANCHOR_MATCH_FAIL);
+      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.HEADING_MATCH_FAIL);
       assert.deepStrictEqual(verifyError.link, links[idx]);
     }
     assert.strictEqual(counter, 1);
@@ -261,7 +261,7 @@ describe("links verifier", function () {
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
       assert.strictEqual(verifyError.errorType, "anchor");
-      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.ANCHOR_MATCH_FAIL);
+      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.HEADING_MATCH_FAIL);
       assert.deepStrictEqual(verifyError.link, links[idx]);
     }
     assert.strictEqual(counter, 2);
@@ -283,7 +283,7 @@ describe("links verifier", function () {
     for await (const [idx, verifyError] of enumerate(verify)) {
       counter++;
       assert.strictEqual(verifyError.errorType, "anchor");
-      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.ANCHOR_MATCH_FAIL);
+      assert.strictEqual(verifyError.errorCode, AnchorCheckResponse.HEADING_MATCH_FAIL);
       assert.deepStrictEqual(verifyError.link, links[idx]);
     }
     assert.strictEqual(counter, 3);

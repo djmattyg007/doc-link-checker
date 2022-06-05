@@ -31,8 +31,8 @@ export enum AnchorCheckResponse {
   BINARY_FILE = 1,
   ANCHOR_UNDISCOVERABLE = 2,
   NO_ANCHORS_IN_FILETYPE = 3,
-  ANCHOR_MATCH_SUCCESS = 4,
-  ANCHOR_MATCH_FAIL = 5,
+  HEADING_MATCH_SUCCESS = 4,
+  HEADING_MATCH_FAIL = 5,
   LINE_TARGET_SUCCESS = 6,
   LINE_TARGET_FAIL = 7,
   LINE_TARGET_INVALID = 8,
@@ -94,11 +94,11 @@ function checkDocFileAnchor(
   if (mdFileExts.has(file.extname)) {
     for (const heading of scanMdFileForHeadings(file, { mdType })) {
       if (heading.anchor === anchor) {
-        return AnchorCheckResponse.ANCHOR_MATCH_SUCCESS;
+        return AnchorCheckResponse.HEADING_MATCH_SUCCESS;
       }
     }
 
-    return AnchorCheckResponse.ANCHOR_MATCH_FAIL;
+    return AnchorCheckResponse.HEADING_MATCH_FAIL;
   }
 
   return null;
@@ -191,7 +191,7 @@ function verifyPureAnchorLink(
 
   if (
     checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
-    checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
+    checkAnchorResult !== AnchorCheckResponse.HEADING_MATCH_SUCCESS
   ) {
     return {
       errorType: "anchor",
@@ -240,7 +240,7 @@ async function verifyNonPureAnchorLink(
   });
   if (
     checkAnchorResult !== AnchorCheckResponse.LINE_TARGET_SUCCESS &&
-    checkAnchorResult !== AnchorCheckResponse.ANCHOR_MATCH_SUCCESS
+    checkAnchorResult !== AnchorCheckResponse.HEADING_MATCH_SUCCESS
   ) {
     return {
       errorType: "anchor",
