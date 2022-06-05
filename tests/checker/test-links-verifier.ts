@@ -1,6 +1,7 @@
+import path from "node:path";
+
 import { describe, it } from "mocha";
 import { assert } from "chai";
-import path from "node:path";
 
 import { VFile } from "vfile";
 import { read as makeVfile } from "to-vfile";
