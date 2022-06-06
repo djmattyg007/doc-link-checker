@@ -7,3 +7,9 @@
 - Check link references
 
 - Support restructured text
+
+Bigger:
+
+Right now it's feasible that we can repeat the same interaction with files over and over.
+We can check for access, read the file in, parse it for markdown tokens, and load headings.
+We should have a virtual filesystem layer that caches all of this in memory to speed things up.
