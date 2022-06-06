@@ -199,8 +199,12 @@ itself. The link should be converted to a pure anchor.
 
 ##### Anchor errors
 
-An anchor error indicates the file referenced in the link exists, but the heading or line number
-referred to after the `#` in the link does not exist.
+An anchor error indicates the file referenced in the link exists, but there is a problem with the
+heading or line number referred to after the `#` in the link.
+
+**`0` - empty anchor**
+
+The link includes a `#`, but there's nothing after the `#`.
 
 **`1` - binary file**
 
