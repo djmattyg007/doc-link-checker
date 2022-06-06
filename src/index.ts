@@ -18,6 +18,6 @@ export {
   verifyLinks,
 } from "./checker/links.js";
 
-export type { MarkdownType, ScanMarkdownOptions } from "./markdown/types.js";
+export type { mdTypes, MarkdownType, ScanMarkdownOptions } from "./markdown/types.js";
 export { scanFileForLinks } from "./markdown/link.js";
 export { scanFileForHeadings } from "./markdown/heading.js";
