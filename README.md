@@ -11,6 +11,9 @@ see the [ideas list](./ideas.txt) for a full list of currently planned features.
 
 Doc Link Checker is 100% native Typescript.
 
+If you just want to use this as a CLI tool, I recommend taking a look at
+[`doc-link-checker-cli`](https://github.com/djmattyg007/doc-link-checker-cli).
+
 ## Install
 
 With yarn:
