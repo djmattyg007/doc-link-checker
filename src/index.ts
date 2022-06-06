@@ -1,4 +1,5 @@
 import { mdDefaultFileExts, mdDefaultType } from "./filetypes.js";
+import { mdTypes } from "./markdown/types.js";
 
 export { ScanOptions, ScanResult, scanFiles } from "./scanner.js";
 
@@ -6,6 +7,7 @@ export type { PositionRef, Position, Link, Heading } from "./types.js";
 
 export const markdownOptions = {
   mdDefaultFileExts,
+  mdTypes,
   mdDefaultType,
 };
 
@@ -18,6 +20,6 @@ export {
   verifyLinks,
 } from "./checker/links.js";
 
-export type { mdTypes, MarkdownType, ScanMarkdownOptions } from "./markdown/types.js";
+export type { MarkdownType, ScanMarkdownOptions } from "./markdown/types.js";
 export { scanFileForLinks } from "./markdown/link.js";
 export { scanFileForHeadings } from "./markdown/heading.js";
