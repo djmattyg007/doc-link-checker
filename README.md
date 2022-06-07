@@ -288,6 +288,8 @@ import { mdDefaultType, mdDefaultFileExts } from "doc-link-checker";
 
 ## Backwards compatibility
 
+This project aims to follow [semantic versioning](https://semver.org).
+
 The only public interface for this package is what can be imported directly from the package's
 `main` file. Nested imports are not supported, and the internal organisation of the code could
 change at any time.
