@@ -270,6 +270,9 @@ export async function* verifyLinks(
     ...options,
   };
 
+  // Normalise the input so it's absolute, and contains no trailing path separators.
+  basePath = path.resolve(basePath);
+
   for (const link of links) {
     if (link.url) {
       // We don't support checking URLs yet.
