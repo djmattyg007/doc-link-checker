@@ -294,6 +294,9 @@ The only public interface for this package is what can be imported directly from
 `main` file. Nested imports are not supported, and the internal organisation of the code could
 change at any time.
 
+What the checker reports as an error may change with minor version bumps. The maintainers
+endeavour to ensure it will not change with patch version bumps.
+
 ## Development
 
 ### Typescript
