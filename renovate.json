@@ -12,5 +12,14 @@
       "matchManagers": ["github-actions"],
       "separateMajorMinor": "false"
     }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["\\.github\/workflows\/[^/]+\\.ya?ml"],
+      "matchStrings": [
+        "docker:\/\/(?<depName>([^\/]+\/)?[^\/]+\/[^\/]+):(?<currentValue>[\\d\\.]+)@(?<currentDigest>sha256:[a-f0-9]+)"
+      ],
+      "datasourceTemplate": "docker"
+    }
   ]
 }
