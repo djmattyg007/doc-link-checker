@@ -39,3 +39,21 @@ jobs:
 
       - name: "Run tests"
         run: "yarn run test --full-trace"
+
+  docs:
+    strategy:
+      fail-fast: false
+
+    name: "Doc Link Checker"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v3"
+
+      - name: "Run Doc Link Checker"
+        uses: "docker://ghcr.io/djmattyg007/doc-link-checker:1.0.2"
+        with:
+          args: "lint --exclude-extend tests/fixtures/**"
+        env:
+          DOC_LINK_CHECKER_MDTYPE: "gfm"
