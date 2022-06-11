@@ -1255,7 +1255,7 @@ __metadata:
     tsheredoc: 1.0.1
     typescript: 4.7.3
     unified: ^10.1.2
-    vfile: 5.3.2
+    vfile: 5.3.3
     xo: 0.50.0
   languageName: unknown
   linkType: soft
@@ -5592,6 +5592,18 @@ __metadata:
     unist-util-stringify-position: ^3.0.0
     vfile-message: ^3.0.0
   checksum: c352a76974c4ce0a0177e157335c95a647dae9e510ed4fad9b328479eb46230dc9ade8793d4c8b7f78263314797fc5026ff14da086e3805d530645e7d8057dcb
+  languageName: node
+  linkType: hard
+
+"vfile@npm:5.3.3":
+  version: 5.3.3
+  resolution: "vfile@npm:5.3.3"
+  dependencies:
+    "@types/unist": ^2.0.0
+    is-buffer: ^2.0.0
+    unist-util-stringify-position: ^3.0.0
+    vfile-message: ^3.0.0
+  checksum: 975d1e1ec4608355ca914d1a559607950316eb25008eafb14ef9c94d047fc38064a731a372d18501efcb2dcd657eb03e735bdcd2f0a48efaf2add8192f1a0b69
   languageName: node
   linkType: hard
 
