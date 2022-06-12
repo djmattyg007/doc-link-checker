@@ -15,6 +15,8 @@ export interface ScanOptions {
   readonly mdType: MarkdownType;
   readonly mdFileExts: ReadonlySet<string>;
   readonly globConcurrency: number;
+  readonly useGitignore: boolean;
+  readonly ignoreFiles: ReadonlyArray<string>;
 }
 
 export interface ScanResult {
@@ -28,6 +30,8 @@ const scanOptionsDefaults: ScanOptions = {
   mdFileExts: mdDefaultFileExts,
   caseSensitive: false,
   globConcurrency: 0,
+  useGitignore: false,
+  ignoreFiles: [],
 };
 
 interface GlobOptions extends GlobbyGlobOptions {
@@ -57,14 +61,17 @@ export async function* scanFiles(
     ...options,
   };
 
+  // The intent is clearer with a plain slice.
+  /* eslint-disable unicorn/prefer-spread */
   const globOptions: GlobOptions = {
     cwd: mergedOptions.basePath,
-    // The intent is clearer with a plain slice.
-    // eslint-disable-next-line unicorn/prefer-spread
     ignore: excludeGlobs.slice(),
     caseSensitiveMatch: mergedOptions.caseSensitive,
     onlyFiles: true,
+    gitignore: mergedOptions.useGitignore,
+    ignoreFiles: mergedOptions.ignoreFiles.slice(),
   };
+  /* eslint-enable unicorn/prefer-spread */
   if (mergedOptions.globConcurrency > 0) {
     globOptions.concurrency = mergedOptions.globConcurrency;
   }
