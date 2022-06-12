@@ -1,6 +1,7 @@
 import process from "node:process";
 
-import { readGlob, Options as GlobOptions } from "glob-reader";
+import { globbyStream, Options as GlobbyGlobOptions } from "globby";
+import { read } from "to-vfile";
 import type { VFile } from "vfile";
 
 import { mdDefaultFileExts, mdDefaultType } from "./filetypes.js";
@@ -29,6 +30,22 @@ const scanOptionsDefaults: ScanOptions = {
   globConcurrency: 0,
 };
 
+interface GlobOptions extends GlobbyGlobOptions {
+  readonly cwd: string;
+}
+
+// Small wrapper around globby to yield VFile objects
+async function* readGlob(
+  patterns: ReadonlyArray<string>,
+  options: GlobOptions,
+): AsyncGenerator<VFile> {
+  const filePaths = globbyStream(patterns, options);
+
+  for await (const filePath of filePaths) {
+    yield read({ cwd: options.cwd, path: String(filePath) });
+  }
+}
+
 export async function* scanFiles(
   includeGlobs: ReadonlyArray<string>,
   excludeGlobs: ReadonlyArray<string>,
@@ -46,14 +63,13 @@ export async function* scanFiles(
     // eslint-disable-next-line unicorn/prefer-spread
     ignore: excludeGlobs.slice(),
     caseSensitiveMatch: mergedOptions.caseSensitive,
+    onlyFiles: true,
   };
   if (mergedOptions.globConcurrency > 0) {
     globOptions.concurrency = mergedOptions.globConcurrency;
   }
 
-  // The intent is clearer with a plain slice.
-  // eslint-disable-next-line unicorn/prefer-spread
-  const glob = readGlob(includeGlobs.slice(), globOptions);
+  const glob = readGlob(includeGlobs, globOptions);
   for await (const file of glob) {
     const fileExt = file.extname;
     if (!fileExt) {
