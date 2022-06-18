@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). For details on
 what is and isn't covered by the project's backwards compatibility promise, see [the README](./README.md#backwards-compatibility).
 
-## [Unreleased]
+## [1.1.0] - 2022-06-18
 
 ### Added
 
@@ -19,6 +19,8 @@ at the time of writing.
 
 Removed intermediary library used for reading globbed files (`glob-reader`). The underlying glob
 package `globby` is still in use, so there should be no visible difference to behaviour.
+
+Compiled with a new version of Typescript - `v4.7.4`.
 
 ## [1.0.6] - 2022-06-09
 
