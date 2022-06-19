@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "github-slugger": "^1.4.0",
-    "globby": "^13.1.1",
+    "globby": "^13.1.2",
     "is-text-path": "^2.0.0",
     "remark-gfm": "^3.0.1",
     "remark-parse": "^10.0.1",

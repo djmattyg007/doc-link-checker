@@ -69,7 +69,7 @@ export async function* scanFiles(
     caseSensitiveMatch: mergedOptions.caseSensitive,
     onlyFiles: true,
     gitignore: mergedOptions.useGitignore,
-    ignoreFiles: mergedOptions.ignoreFiles.slice(),
+    ignoreFiles: mergedOptions.ignoreFiles,
   };
   /* eslint-enable unicorn/prefer-spread */
   if (mergedOptions.globConcurrency > 0) {
