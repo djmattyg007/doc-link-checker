@@ -30,7 +30,7 @@
     "tsheredoc": "1.0.1",
     "typescript": "4.7.4",
     "vfile": "5.3.4",
-    "xo": "0.50.0"
+    "xo": "0.51.0"
   },
   "engines": {
     "node": ">=16"
