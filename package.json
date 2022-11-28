@@ -24,7 +24,7 @@
     "chai": "4.3.7",
     "eslint-plugin-mocha": "10.1.0",
     "mocha": "10.0.0",
-    "prettier": "2.7.1",
+    "prettier": "2.8.0",
     "remark-cli": "11.0.0",
     "ts-node": "10.9.1",
     "tsheredoc": "1.0.1",
