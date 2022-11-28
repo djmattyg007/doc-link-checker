@@ -4,7 +4,7 @@
   "description": "Verify that internal links in your documentation are valid.",
   "license": "GPLv3",
   "type": "module",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
