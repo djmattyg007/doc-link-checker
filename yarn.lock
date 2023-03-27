@@ -5159,12 +5159,12 @@ __metadata:
   linkType: hard
 
 "to-vfile@npm:^7.0.0, to-vfile@npm:^7.2.3":
-  version: 7.2.3
-  resolution: "to-vfile@npm:7.2.3"
+  version: 7.2.4
+  resolution: "to-vfile@npm:7.2.4"
   dependencies:
     is-buffer: ^2.0.0
     vfile: ^5.1.0
-  checksum: 6a020a7c804e1545e7df77ac7fddf04d4e9950275476118ca899d3e5d702e6954be66c091cab5688483ff99cc09358f21d6b39922bd3997274566baadc812ded
+  checksum: 5fa9bd6c3b0dae6abc65a882bef4d899940305237449740ee803c5ef87c1df56425290009abde7d215884f481c3254d78d19120f38109217c6c066676f2e7609
   languageName: node
   linkType: hard
 
