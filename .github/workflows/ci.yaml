@@ -52,7 +52,7 @@ jobs:
         uses: "actions/checkout@v3"
 
       - name: "Run Doc Link Checker"
-        uses: "docker://ghcr.io/djmattyg007/doc-link-checker:1.0.4@sha256:3e5cdd32cfa05b641b6b5e04c2a82426adde5248fed94c5ce2be19b5f54d4410"
+        uses: "docker://ghcr.io/djmattyg007/doc-link-checker:1.0.4@sha256:4cb992d2ff363913967c3c5ff08c35d5c2dfcd5660204f8a3ee69264a70c43e8"
         with:
           args: "lint --exclude-extend tests/fixtures/**"
         env:
