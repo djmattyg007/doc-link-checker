@@ -338,10 +338,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.18.62":
-  version: 16.18.62
-  resolution: "@types/node@npm:16.18.62"
-  checksum: 816783dec474acdb476762ce6fed0cb92bbbf98327ba3f8946fcec9fe6824dd71f1189cc5bd9f00cd0db80947a64601caa8b87f6a2e0cee52c17ced466438e90
+"@types/node@npm:16.18.68":
+  version: 16.18.68
+  resolution: "@types/node@npm:16.18.68"
+  checksum: 094ae9ed80eed2af4bd34d551467e307f2ecb6efb0f8b872feebfb9da5ea4b446c5883c9abe2349f8ea2b78bdacd8726a946c27c2a246676c4c330e41ccb9284
   languageName: node
   linkType: hard
 
@@ -1281,7 +1281,7 @@ __metadata:
     "@types/chai": 4.3.11
     "@types/github-slugger": 1.3.0
     "@types/mocha": 9.1.1
-    "@types/node": 16.18.62
+    "@types/node": 16.18.68
     chai: 4.3.10
     eslint-plugin-mocha: 10.1.0
     github-slugger: ^1.4.0
